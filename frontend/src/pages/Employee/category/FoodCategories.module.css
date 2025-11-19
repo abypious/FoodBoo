@@ -1,0 +1,66 @@
+/* --------------------------- PAGE WRAPPER --------------------------- */
+.pageCard {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.07);
+  width: 100%;
+  max-width: 1500px;
+}
+
+/* Orange Bar */
+.orangeBar {
+  height: 2px;
+  width: 100%;
+  background: #ff7b00;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+/* SEARCH CONTAINER */
+.searchContainer {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: #fafafa;
+  padding: 0.2rem 1.1rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  gap: 10px;
+}
+
+.searchIcon {
+  color: #666;
+}
+
+.searchInput {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 1rem;
+}
+
+
+/* --------------------------- HEADINGS --------------------------- */
+.heading {
+  margin: 0.5rem 0 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+/* --------------------------- GRID --------------------------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 1.5rem;
+}
+
+.noResults {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #777;
+  margin-top: 1rem;
+}

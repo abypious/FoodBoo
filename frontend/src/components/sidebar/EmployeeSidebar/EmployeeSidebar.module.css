@@ -1,0 +1,115 @@
+.sidebar {
+  width: 300px;
+  position: fixed;
+  top: 70px;                        /* navbar height */
+  right: 0;
+  height: calc(100vh - 70px);
+  background: #fff;
+  z-index: 999;
+  display: flex;
+  padding: 0;
+}
+
+
+.container {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.pointsCard {
+  background: #fff;
+  padding: 18px;
+  border-radius: 12px;
+  font-size: 1.4rem;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #eee;
+}
+
+.heading {
+  margin-top: 25px;
+  margin-bottom: 6px;
+  font-size: 1.1rem;
+}
+
+.underline {
+  width: 100%;
+  height: 2px;
+  background: #ff7b00;
+  margin-bottom: 18px;
+}
+
+.bookingList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.bookingCard {
+  display: flex;
+  gap: 10px;
+  background: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #eee;
+}
+
+.bookingCard img {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-weight: 600;
+}
+
+.stars {
+  color: #ffbf00;
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
+.seeAll {
+  margin-top: 8px;
+  text-align: right;
+}
+
+.seeAll a {
+  color: #0066ff;
+  text-decoration: underline;
+}
+
+.footerMenu {
+  border-top: 1px solid #eee;
+  padding-top: 12px;
+  font-size: 0.9rem;
+  line-height: 1.8;
+  margin-top: auto;
+  padding-bottom: 20px;
+}
+
+.footerMenu p {
+  font-size: 1.1rem;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.empty {
+  padding: 15px;
+  background: #fafafa;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  text-align: center;
+}
+
+

@@ -1,0 +1,14 @@
+:root {
+  --color-primary: #ff7b00;
+  --color-bg: #f7f7f7;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  font-family: system-ui, sans-serif;
+}
+
+button {
+  cursor: pointer;
+}

@@ -1,0 +1,27 @@
+/* Make room dynamically under the navbar */
+.employee-main {
+  margin-right: 300px;     /* Sidebar width */
+  padding: 20px;
+  box-sizing: border-box;
+  min-height: calc(100vh - var(--navbar-height));
+}
+
+/* Detect navbar height with CSS variable (Automated) */
+:root {
+  --navbar-height: 0px;
+}
+
+.navbar {
+  height: auto;
+}
+
+.navbar {
+  --navbar-height: 100%;
+}
+
+/* Position sidebar */
+.sidebar {
+  position: fixed;
+  right: 0;
+  top: var(--navbar-height);
+}

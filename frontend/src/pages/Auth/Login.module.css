@@ -1,0 +1,120 @@
+@import "../../assets/styles/variables.css";
+
+/* FULLSCREEN CENTER */
+.container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f7f7f7;
+  font-family: var(--font-family);
+}
+
+/* LOGIN CARD */
+.box {
+  width: 420px;
+  background: white;
+  padding: 40px;
+  border-radius: 14px;
+  box-shadow: var(--shadow-lg);
+}
+
+/* TITLE */
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+/* FORM */
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: 600;
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+
+/* INPUTS */
+input {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+}
+
+input:focus {
+  border-color: var(--color-primary);
+}
+
+/* ERROR TEXT */
+.error {
+  color: red;
+  font-size: 0.85rem;
+  margin-top: 3px;
+  margin-bottom: 10px;
+}
+
+/* CHECKBOX */
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 14px 0;
+}
+
+.checkboxRow span {
+  font-size: 0.9rem;
+}
+
+/* SIGN IN BUTTON */
+.signinBtn {
+  margin-top: 10px;
+  background: #222;
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 12px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.signinBtn:hover {
+  background: #000;
+}
+
+/* SIGN UP ROW */
+.signupRow {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.signupLink {
+  color: var(--color-primary);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* DIVIDER */
+.divider {
+  margin: 22px 0;
+  height: 1px;
+  background: #ddd;
+}
+
+/* GUEST LOGIN */
+.guestLink {
+  display: block;
+  text-align: center;
+  font-weight: 600;
+  text-decoration: underline;
+  color: #444;
+  cursor: pointer;
+}

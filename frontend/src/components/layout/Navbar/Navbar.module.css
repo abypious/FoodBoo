@@ -1,0 +1,116 @@
+@import "../../../assets/styles/variables.css";
+
+/* NAVBAR MAIN */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  z-index: 1000;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+
+/* LEFT — Logo + Title */
+.left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 2rem;
+}
+
+.logo {
+  height: 40px;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.title span {
+  color: var(--color-primary);
+}
+
+/* CENTER — Location */
+.center {
+  display: flex;
+  align-items: center;
+}
+
+.location {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #444;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.location i {
+  color: var(--color-primary);
+}
+
+.arrow {
+  font-size: 1rem;
+  opacity: 0.7;
+}
+
+/* DIVIDER */
+.divider {
+  width: 2px;
+  height: 35px;
+  background-color: var(--color-primary);
+}
+
+/* RIGHT — Links + Signout + Avatar */
+.right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 2rem;
+}
+
+.right a {
+  color: black;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.right a:hover {
+  color: var(--color-primary);
+}
+
+.signout {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+/* Username + Avatar */
+.username {
+  font-weight: 600;
+  color: #444;
+}
+
+.avatar {
+  height: 38px;
+  width: 38px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

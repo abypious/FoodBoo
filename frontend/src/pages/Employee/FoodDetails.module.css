@@ -1,0 +1,201 @@
+.pageCard {
+  background: #fff;
+  padding: 20px;
+  border-radius: 16px;
+  max-width: 1200px;
+  margin: 20px auto;
+}
+
+.backBtn {
+  background: none;
+  border: none;
+  color: #ff9800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.layout {
+  display: flex;
+  gap: 30px;
+}
+
+.left {
+  flex: 3;
+}
+
+.right {
+  flex: 1.2;
+}
+
+.imageWrapper {
+  position: relative;
+}
+
+.image {
+  width: 100%;
+  height: 600px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.arrows {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+  padding: 0 10px;
+}
+
+.arrowBtn {
+  border: none;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.dots {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background: #ccc;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.activeDot {
+  background: #ff9800;
+}
+
+.foodName {
+  font-size: 24px;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.available {
+  margin: 4px 0;
+  opacity: 0.6;
+}
+
+.rating {
+  color: #ffbf00;
+  margin: 6px 0 16px;
+}
+
+.sectionTitle {
+  margin-top: 20px;
+  margin-bottom: 8px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.formRow {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.dateInput,
+.timeSelect {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.proceedBtn {
+  background: #ff9800;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.reviewsBox {
+  margin-top: 14px;
+}
+
+.reviewCard {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.reviewImg {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+}
+
+.reviewName {
+  font-weight: 600;
+}
+
+.reviewStars {
+  color: #ffbf00;
+}
+
+.right {
+  border-left: 1px solid #eee;
+  padding-left: 20px;
+}
+
+.pointsCard {
+  background: #fff7e6;
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.pointsTitle {
+  opacity: 0.7;
+}
+
+.pointsValue {
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.recentTitle {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.recentList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.recentItem {
+  display: flex;
+  gap: 12px;
+}
+
+.recentImg {
+  width: 70px;
+  height: 50px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.seeAllBtn {
+  margin-top: 8px;
+  background: none;
+  border: none;
+  color: #ff9800;
+  cursor: pointer;
+}

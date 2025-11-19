@@ -1,0 +1,68 @@
+.card {
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #eee;
+  padding-bottom: 12px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+.imageWrapper {
+  position: relative;
+}
+
+.image {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 14px 14px 0 0;
+}
+
+.navArrows {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 8px;
+}
+
+.arrow {
+  background: rgba(255,255,255,0.7);
+  border-radius: 50%;
+  padding: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.name {
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 10px;
+  padding: 0 12px;
+}
+
+.stars {
+  color: #ffbf00;
+  padding: 0 12px;
+}
+
+.available {
+  opacity: 0.6;
+  padding: 0 12px;
+  margin-top: 4px;
+}
+
+.desc {
+  padding: 0 12px;
+  font-size: 14px;
+  opacity: 0.75;
+  margin-top: 6px;
+  margin-bottom: 10px;
+  line-height: 1.3;
+}

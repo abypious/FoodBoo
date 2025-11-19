@@ -1,0 +1,68 @@
+.employees-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.add-btn {
+  background: orange;
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  background: #fff;
+  padding: 18px;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+}
+
+.employees-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.employees-table th,
+.employees-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.employees-table th {
+  font-weight: 600;
+  background: #fafafa;
+}
+
+.edit-btn,
+.delete-btn {
+  padding: 6px 10px;
+  margin-right: 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.edit-btn {
+  border: 1px solid #555;
+  background: #f4f4f4;
+}
+
+.delete-btn {
+  border: 1px solid red;
+  background: #ffeaea;
+  color: red;
+}
+
+.no-data {
+  text-align: center;
+  padding: 20px;
+  font-size: 15px;
+  opacity: 0.6;
+}
