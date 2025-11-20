@@ -40,7 +40,14 @@ export default function FoodCard({ food, onClick, children }) {
         <p>{food.description}</p>
       </div>
 
-      {children && <div className={styles.footer}>{children}</div>}
+      {children && (
+        <div
+          className={styles.footer}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {children}
+        </div>
+      )}
     </div>
   );
 }

@@ -49,20 +49,39 @@ export default function FoodList() {
 
   return (
     <div className="admin-container">
-      <div className="top-bar">
-        <input
-          placeholder="Enter the food you are looking for"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <select className="filter-dropdown" value={selectedCategory} onChange={handleFilter}>
-          <option value="">All</option>
-          {categories.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.name}
-            </option>
-          ))}
-        </select>
+      <div className="toolbar">
+        <div className="search-wrapper">
+          <span className="search-icon">🔍</span>
+          <input
+            className="search-input"
+            placeholder="Search foods..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+
+        <div className="filter-wrapper">
+          <span className="filter-icon">⚙️</span>
+          <select
+            className="filter-dropdown"
+            value={selectedCategory}
+            onChange={handleFilter}
+          >
+            <option value="">All Categories</option>
+            {categories.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <button
+          className="add-btn premium-add-btn"
+          onClick={() => nav("/admin/foods/add")}
+        >
+          ✚ Add Food
+        </button>
       </div>
 
       <div className="grid-list">
@@ -78,7 +97,8 @@ export default function FoodList() {
                 className="review-btn"
                 onClick={(e) => {
                   e.stopPropagation();
-                  nav(`/admin/foods/edit/${food.id}`);
+                  nav(`/admin/foods/reviews/${food.id}`);
+
                 }}
               >
                 Reviews →
@@ -86,10 +106,6 @@ export default function FoodList() {
             </FoodCard>
         ))}
       </div>
-
-      <button className="add-btn" onClick={() => nav("/admin/foods/add")}>
-        + Add Food
-      </button>
     </div>
   );
 }

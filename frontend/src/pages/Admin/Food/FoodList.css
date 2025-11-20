@@ -5,25 +5,92 @@
   box-shadow: 0 4px 18px rgba(0,0,0,0.08);
 }
 
-.top-bar {
+/* --- PREMIUM TOOLBAR WRAPPER --- */
+.toolbar {
   display: flex;
-  gap: 12px;
-  margin-bottom: 16px;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(12px);
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+  margin-bottom: 18px;
 }
 
-.top-bar input {
+/* --- SEARCH BOX --- */
+.search-wrapper {
   flex: 1;
-  padding: 12px 14px;
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #777;
+  font-size: 16px;
+  pointer-events: none;
+}
+
+.search-input {
+  width: 95%;
+  height: 44px;
+  padding: 0 14px 0 38px;
   border-radius: 10px;
   border: 1px solid #ddd;
+  font-size: 15px;
+  transition: 0.2s ease;
+  background: white;
+}
+
+/* --- FILTER DROPDOWN --- */
+.filter-wrapper {
+  position: relative;
+}
+
+.filter-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+  pointer-events: none;
+  font-size: 15px;
 }
 
 .filter-dropdown {
-  padding: 12px 14px;
+  height: 44px;
+  padding: 0 12px 0 38px;
   border-radius: 10px;
   border: 1px solid #ddd;
+  font-size: 15px;
+  cursor: pointer;
+  background: #fff;
+  appearance: none;
 }
 
+/* --- PREMIUM ADD BUTTON --- */
+.premium-add-btn {
+  height: 44px;
+  padding: 0 22px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #ff9900, #ff7b00);
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  border: none;
+  white-space: nowrap;
+  box-shadow: 0 4px 10px rgba(255, 140, 0, 0.3);
+  transition: 0.2s ease;
+}
+
+.premium-add-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(255, 140, 0, 0.4);
+}
 .grid-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -74,13 +141,3 @@
   font-weight: 500;
 }
 
-.add-btn {
-  margin-top: 20px;
-  background: orange;
-  padding: 12px 16px;
-  border: none;
-  color: #fff;
-  border-radius: 10px;
-  font-size: 16px;
-  cursor: pointer;
-}

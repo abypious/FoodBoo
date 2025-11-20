@@ -9,6 +9,8 @@ import com.fooboo.repository.UserRepository;
 import com.fooboo.security.AppUserDetails;
 import com.fooboo.service.ReviewService;
 
+import lombok.Data;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,69 +31,101 @@ public class ReviewController {
         this.userRepo = userRepo;
     }
 
-    //  ADD REVIEW 
-    @PostMapping("/{foodId}")
+    @Data
+    public static class ReviewRequest {
+        private Integer rating;
+        private String comment;
+    }
+
+    // ADD OR UPDATE REVIEW FOR A BOOKING
+    @PostMapping("/{bookingId}")
     @PreAuthorize("hasRole('EMPLOYEE')")
-    public ResponseEntity<SuccessResponse> addReview(
-            @PathVariable Long foodId,
-            @RequestBody Review review,
+    public ResponseEntity<SuccessResponse> addOrUpdateReview(
+            @PathVariable Long bookingId,
+            @RequestBody ReviewRequest req,
             @AuthenticationPrincipal AppUserDetails userDetails) {
 
-        if (review.getComment() == null || review.getComment().isBlank()) {
+        if (req.getComment() == null || req.getComment().isBlank()) {
             throw new BadRequestException("Review comment cannot be empty");
         }
 
-        if (review.getRating() == null || review.getRating() < 1 || review.getRating() > 5) {
+        if (req.getRating() == null || req.getRating() < 1 || req.getRating() > 5) {
             throw new BadRequestException("Rating must be between 1 and 5");
         }
 
         User user = userRepo.findByEmail(userDetails.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        Review saved = service.addReview(user, foodId, review);
+        Review saved = service.addOrUpdateReview(user, bookingId, req.getRating(), req.getComment());
 
         return ResponseEntity.ok(
                 new SuccessResponse(
                         LocalDateTime.now(),
                         200,
-                        "Review added successfully",
+                        "Review saved successfully",
                         saved
                 )
         );
     }
 
-    //  UPDATE REVIEW 
-    @PutMapping("/{reviewId}")
+    // GET REVIEW FOR A BOOKING
+    @GetMapping("/booking/{bookingId}")
     @PreAuthorize("hasRole('EMPLOYEE')")
-    public ResponseEntity<SuccessResponse> updateReview(
-            @PathVariable Long reviewId,
-            @RequestBody Review updatedData,
+    public ResponseEntity<SuccessResponse> getReviewForBooking(
+            @PathVariable Long bookingId) {
+
+        Review review = service.getReviewForBooking(bookingId);
+
+        return ResponseEntity.ok(
+                new SuccessResponse(
+                        LocalDateTime.now(),
+                        200,
+                        "Fetched review for booking",
+                        review
+                )
+        );
+    }
+
+    // FOOD-WISE REVIEWS
+    @GetMapping("/food/{foodId}")
+    @PreAuthorize("hasAnyRole('EMPLOYEE','ADMIN')")
+    public ResponseEntity<SuccessResponse> getReviewsForFood(
+            @PathVariable Long foodId) {
+
+        List<Review> reviews = service.getReviewsForFood(foodId);
+
+        return ResponseEntity.ok(
+                new SuccessResponse(
+                        LocalDateTime.now(),
+                        200,
+                        "Fetched reviews for food",
+                        reviews
+                )
+        );
+    }
+
+    // MY REVIEWS
+    @GetMapping("/my")
+    @PreAuthorize("hasRole('EMPLOYEE')")
+    public ResponseEntity<SuccessResponse> getMyReviews(
             @AuthenticationPrincipal AppUserDetails userDetails) {
-
-        if (updatedData.getComment() == null || updatedData.getComment().isBlank()) {
-            throw new BadRequestException("Review comment cannot be empty");
-        }
-
-        if (updatedData.getRating() == null || updatedData.getRating() < 1 || updatedData.getRating() > 5) {
-            throw new BadRequestException("Rating must be between 1 and 5");
-        }
 
         User user = userRepo.findByEmail(userDetails.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        Review saved = service.updateReview(reviewId, user, updatedData);
+        List<Review> reviews = service.getReviewsByUser(user);
 
         return ResponseEntity.ok(
                 new SuccessResponse(
                         LocalDateTime.now(),
                         200,
-                        "Review updated successfully",
-                        saved
+                        "Fetched your reviews successfully",
+                        reviews
                 )
         );
     }
 
-    //  DELETE REVIEW 
+    // DELETE REVIEW
     @DeleteMapping("/{reviewId}")
     @PreAuthorize("hasRole('EMPLOYEE')")
     public ResponseEntity<SuccessResponse> deleteReview(
@@ -113,48 +147,10 @@ public class ReviewController {
         );
     }
 
-    //  FOOD REVIEWS 
-    @GetMapping("/food/{foodId}")
-    @PreAuthorize("hasAnyRole('EMPLOYEE','ADMIN')")
-    public ResponseEntity<SuccessResponse> getFoodReviews(@PathVariable Long foodId) {
-
-        List<Review> reviews = service.getReviewsForFood(foodId);
-
-        return ResponseEntity.ok(
-                new SuccessResponse(
-                        LocalDateTime.now(),
-                        200,
-                        "Fetched reviews for food successfully",
-                        reviews
-                )
-        );
-    }
-
-    //  MY REVIEWS 
-    @GetMapping("/my")
-    @PreAuthorize("hasAnyRole('EMPLOYEE')")
-    public ResponseEntity<SuccessResponse> getMyReviews(
-            @AuthenticationPrincipal AppUserDetails userDetails) {
-
-        User user = userRepo.findByEmail(userDetails.getUsername())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
-        List<Review> reviews = service.getReviewsByUser(user);
-
-        return ResponseEntity.ok(
-                new SuccessResponse(
-                        LocalDateTime.now(),
-                        200,
-                        "Fetched your reviews successfully",
-                        reviews
-                )
-        );
-    }
-
-    //  ALL REVIEWS
-    @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<SuccessResponse> getAllReviews() {
+    // GET ALL REVIEWS - ADMIN ONLY
+        @GetMapping("")
+        @PreAuthorize("hasRole('ADMIN')")
+        public ResponseEntity<SuccessResponse> getAllReviews() {
 
         List<Review> reviews = service.getAllReviews();
 
@@ -166,5 +162,6 @@ public class ReviewController {
                         reviews
                 )
         );
-    }
+        }
+
 }

@@ -1,0 +1,84 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.popup {
+  background: #fff;
+  padding: 20px 22px;
+  width: 480px;
+  border-radius: 14px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.popup h3 {
+  margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.rating {
+  display: flex;
+  gap: 8px;
+  font-size: 25px;
+  margin-bottom: 15px;
+}
+
+.star {
+  color: #ccc;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.activeStar {
+  color: #ff9800;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+textarea {
+  max-width: 450px;
+  height: 90px;
+  border-radius: 8px;
+  padding: 10px;
+  resize: none;
+  border: 1px solid #ddd;
+  outline: none;
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.actions button {
+  padding: 7px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #ff7f32;
+  color: white;
+  font-weight: 600;
+}
+
+.cancel {
+  background: #bbb !important;
+  color: #fff !important;
+}

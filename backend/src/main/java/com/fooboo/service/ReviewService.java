@@ -2,94 +2,90 @@ package com.fooboo.service;
 
 import com.fooboo.exception.BadRequestException;
 import com.fooboo.exception.ResourceNotFoundException;
-import com.fooboo.model.FoodItem;
+import com.fooboo.model.Booking;
 import com.fooboo.model.Review;
 import com.fooboo.model.User;
-import com.fooboo.repository.FoodItemRepository;
+import com.fooboo.repository.BookingRepository;
 import com.fooboo.repository.ReviewRepository;
 
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
 public class ReviewService {
 
     private final ReviewRepository reviewRepo;
-    private final FoodItemRepository foodRepo;
+    private final BookingRepository bookingRepo;
     private final PointsService pointsService;
 
     public ReviewService(ReviewRepository reviewRepo,
-                         FoodItemRepository foodRepo,
+                         BookingRepository bookingRepo,
                          PointsService pointsService) {
 
         this.reviewRepo = reviewRepo;
-        this.foodRepo = foodRepo;
+        this.bookingRepo = bookingRepo;
         this.pointsService = pointsService;
     }
 
-    public Review addReview(User user, Long foodId, Review review) {
+    public Review addOrUpdateReview(User user, Long bookingId, int rating, String comment) {
 
-        FoodItem food = foodRepo.findById(foodId)
-                .orElseThrow(() -> new ResourceNotFoundException("Food item not found"));
+        Booking booking = bookingRepo.findById(bookingId)
+                .orElseThrow(() -> new ResourceNotFoundException("Booking not found"));
 
-        boolean alreadyReviewed = reviewRepo.findByUserAndFoodItem(user, food).isPresent();
-        if (alreadyReviewed) {
-            throw new BadRequestException("You have already reviewed this food item");
+        if (!booking.getUser().getId().equals(user.getId())) {
+            throw new BadRequestException("You cannot review another user's booking");
         }
 
+        if (!"COMPLETED".equals(booking.getStatus())) {
+            throw new BadRequestException("You can only review completed bookings");
+        }
+
+        Review review = reviewRepo.findByBookingId(bookingId)
+                .orElse(new Review());
+
+        boolean isNew = (review.getId() == null);
+
+        review.setBooking(booking);
         review.setUser(user);
-        review.setFoodItem(food);
+        review.setRating(rating);
+        review.setComment(comment);
 
         Review saved = reviewRepo.save(review);
 
-        pointsService.addPoints(user, 5, "Added review for " + food.getName());
+        if (isNew) {
+            pointsService.addPoints(user, 5, "Added review for " + booking.getFoodItem().getName());
+        }
 
         return saved;
     }
 
-    public Review updateReview(Long reviewId, User user, Review updatedReview) {
-
-        Review existing = reviewRepo.findById(reviewId)
-                .orElseThrow(() -> new ResourceNotFoundException("Review not found"));
-
-        if (!existing.getUser().getId().equals(user.getId())) {
-            throw new BadRequestException("You cannot edit another user's review");
-        }
-
-        existing.setRating(updatedReview.getRating());
-        existing.setComment(updatedReview.getComment());
-
-        Review saved = reviewRepo.save(existing);
-
-        return saved;
+    public Review getReviewForBooking(Long bookingId) {
+        return reviewRepo.findByBookingId(bookingId)
+                .orElse(null);
     }
 
-    // DELETE REVIEW
-    public void deleteReview(Long reviewId, User user) {
-
-        Review existing = reviewRepo.findById(reviewId)
-                .orElseThrow(() -> new ResourceNotFoundException("Review not found"));
-
-        //  Only owner can delete
-        if (!existing.getUser().getId().equals(user.getId())) {
-            throw new BadRequestException("You cannot delete another user's review");
-        }
-
-        reviewRepo.delete(existing);
-    }
-
-    // GET REVIEWS BY FOOD
     public List<Review> getReviewsForFood(Long foodId) {
-        return reviewRepo.findByFoodItemId(foodId);
+        return reviewRepo.findByBooking_FoodItem_Id(foodId);
     }
 
-    // GET ALL REVIEWS (Admin)
+    public List<Review> getReviewsByUser(User user) {
+        return reviewRepo.findByUser_Id(user.getId());
+    }
+
     public List<Review> getAllReviews() {
         return reviewRepo.findAll();
     }
 
-    // GET REVIEWS BY USER
-    public List<Review> getReviewsByUser(User user) {
-        return reviewRepo.findByUser(user);
+    public void deleteReview(Long reviewId, User user) {
+
+        Review review = reviewRepo.findById(reviewId)
+                .orElseThrow(() -> new ResourceNotFoundException("Review not found"));
+
+        if (!review.getUser().getId().equals(user.getId())) {
+            throw new BadRequestException("You cannot delete another user's review");
+        }
+
+        reviewRepo.delete(review);
     }
 }

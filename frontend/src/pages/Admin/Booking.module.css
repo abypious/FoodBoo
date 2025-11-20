@@ -1,0 +1,97 @@
+.container {
+  padding: 2rem;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  max-width: 1100px;
+  margin: 4rem auto;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+  color: #333;
+}
+
+.loading {
+  padding: 2rem;
+  text-align: center;
+  font-size: 1.2rem;
+  color: #444;
+}
+
+.noData {
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 1rem;
+  color: #777;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.table thead {
+  background: #f7f7f7;
+}
+
+.table th,
+.table td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid #eee;
+  font-size: 0.95rem;
+  text-align: left;
+}
+
+.table th {
+  font-weight: 600;
+  color: #444;
+}
+
+.table tr:hover {
+  background: #fafafa;
+}
+
+.table td {
+  color: #555;
+}
+
+/* STATUS BADGES */
+.statusConfirmed {
+  background: #d4f6d8;
+  color: #067a12;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  text-transform: capitalize;
+}
+
+.statusCompleted {
+  background: #dcecff;
+  color: #004a99;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  text-transform: capitalize;
+}
+
+.statusCancelled {
+  background: #ffe0e0;
+  color: #c00000;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  text-transform: capitalize;
+}
+
+.statusPending {
+  background: #fdf2c4;
+  color: #8a6a00;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  text-transform: capitalize;
+}

@@ -1,49 +1,37 @@
-// src/pages/Admin/Food/EditFood.jsx
 import React, { useEffect, useState } from "react";
 import API from "../../../api/axiosConfig";
 import { useNavigate, useParams } from "react-router-dom";
+import "./FoodForm.css";
+import { ArrowLeft } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function EditFood() {
   const { id } = useParams();
   const nav = useNavigate();
+
   const [food, setFood] = useState(null);
   const [categories, setCategories] = useState([]);
-  const [uploading, setUploading] = useState(false);
+  const [uploadingIndex, setUploadingIndex] = useState(null);
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   useEffect(() => {
-    // Fetch categories
     API.get("/api/categories")
-      .then((r) => setCategories(r.data.data ?? r.data))
-      .catch(console.error);
+      .then((r) => setCategories(r.data.data ?? r.data));
 
-    // Fetch all foods then pick the one to edit
-    API.get("/api/foods")
+    API.get(`/api/foods/${id}`)
       .then((r) => {
-        const list = r.data.data ?? r.data;
-        const f = list.find((x) => String(x.id) === String(id));
-        if (f) {
-          // Ensure imageUrls is an array
-          setFood({
-            ...f,
-            imageUrls: Array.isArray(f.imageUrls) ? f.imageUrls : [],
-          });
-        } else {
-          setFood({
-            name: "",
-            description: "",
-            category: {},
-            imageUrls: [],
-          });
-        }
-      })
-      .catch(console.error);
+        const f = r.data.data ?? r.data;
+        setFood({
+          ...f,
+          imageUrls: Array.isArray(f.imageUrls) ? f.imageUrls : [],
+        });
+      });
   }, [id]);
 
-  const handleUpload = async (e) => {
+  const handleUpload = async (e, index) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
-    setUploading(true);
+    setUploadingIndex(index);
 
     try {
       const fd = new FormData();
@@ -53,133 +41,179 @@ export default function EditFood() {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      const url = res.data.data;
-      if (!url) {
-        alert("Upload failed");
-        return;
-      }
+      const url = res.data.data ?? res.data;
 
-      setFood((prev) => ({
-        ...prev,
-        imageUrls: [...prev.imageUrls, url],
-      }));
-    } catch (err) {
-      console.error(err);
-      alert("Upload failed");
-    } finally {
-      setUploading(false);
+      setFood((prev) => {
+        const updated = [...prev.imageUrls];
+        updated[index] = url;
+        return { ...prev, imageUrls: updated };
+      });
+
+      toast.success("Image uploaded");
+    } catch {
+      toast.error("Upload failed");
     }
+
+    setUploadingIndex(null);
   };
 
-  const removeImage = (url) => {
-    setFood((prev) => ({
-      ...prev,
-      imageUrls: prev.imageUrls.filter((img) => img !== url),
-    }));
+  const removeImage = (index) => {
+    setFood((prev) => {
+      const updated = [...prev.imageUrls];
+      updated[index] = "";
+      return { ...prev, imageUrls: updated };
+    });
   };
 
   const submit = async (e) => {
     e.preventDefault();
     try {
       await API.put(`/api/foods/${id}`, food);
-      alert("Updated");
+      toast.success("Food updated");
       nav("/admin/foods");
-    } catch (err) {
-      console.error(err);
-      alert("Update failed — ensure backend supports updating images");
+    } catch {
+      toast.error("Update failed");
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await API.delete(`/api/foods/${id}`);
+      toast.success("Food deleted");
+      nav("/admin/foods");
+    } catch {
+      toast.error("Delete failed");
     }
   };
 
   if (!food) return <div className="p-4">Loading...</div>;
 
   return (
-    <div className="container mt-3">
-      <h3>Edit Food</h3>
+    <div className="food-form-page">
+      <div className="form-card">
 
-      <form onSubmit={submit} style={{ maxWidth: 720 }}>
-        <label>Name</label>
-        <input
-          className="form-control"
-          value={food.name}
-          onChange={(e) => setFood({ ...food, name: e.target.value })}
-          required
-        />
+        <div className="top-row">
+          <button className="back-btn" onClick={() => nav(-1)}>
+            <ArrowLeft size={18} /> Go Back
+          </button>
 
-        <label className="mt-2">Description</label>
-        <textarea
-          className="form-control"
-          value={food.description}
-          onChange={(e) =>
-            setFood({ ...food, description: e.target.value })
-          }
-        />
+          <h1 className="title">
+            Edit <span>Food</span>
+          </h1>
 
-        <label className="mt-2">Category</label>
-        <select
-          className="form-control"
-          value={food.category?.id || ""}
-          onChange={(e) =>
-            setFood({ ...food, category: { id: e.target.value } })
-          }
-          required
-        >
-          <option value="">Choose category</option>
-          {categories.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.name}
-            </option>
+          <button
+            className="danger-btn"
+            onClick={() => setConfirmDelete(true)}
+          >
+            Delete Food
+          </button>  
+        </div>
+
+      
+        <div className="upload-grid">
+          {[0, 1, 2, 3].map((i) => (
+            <label key={i} className="upload-box">
+              {food.imageUrls[i] ? (
+                <div className="preview-wrapper">
+                  <img
+                    src={food.imageUrls[i]}
+                    className="preview-img"
+                    alt="food"
+                  />
+
+                  <button
+                    type="button"
+                    className="remove-img"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeImage(i);
+                    }}
+                  >
+                    ×
+                  </button>
+                </div>
+              ) : (
+                <div className="placeholder">
+                  <span className="upload-icon">⭡</span>
+                  <p>Upload Image of the dish</p>
+                </div>
+              )}
+
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleUpload(e, i)}
+              />
+            </label>
           ))}
-        </select>
+        </div>
 
-        {/* MULTIPLE IMAGE UPLOAD */}
-        <label className="mt-3">Food Images</label>
-        <input type="file" accept="image/*" onChange={handleUpload} />
-        {uploading && <div>Uploading...</div>}
+        <form onSubmit={submit} className="form-section">
+          <div className="form-row">
+            <div>
+              <label>Name of the dish:</label>
+              <input
+                value={food.name}
+                onChange={(e) => setFood({ ...food, name: e.target.value })}
+                required
+              />
+            </div>
 
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 12 }}>
-        {food.imageUrls.map((url, index) => (
-          <div key={url || `img-${index}`} style={{ position: "relative" }}>
-            <img
-              src={url}
-              alt=""
-              style={{
-                width: 120,
-                height: 120,
-                objectFit: "cover",
-                borderRadius: 8,
-                border: "1px solid #ddd",
-              }}
-            />
-
-            <button
-              type="button"
-              onClick={() => removeImage(url)}
-              style={{
-                position: "absolute",
-                top: -6,
-                right: -6,
-                background: "red",
-                color: "#fff",
-                border: "none",
-                borderRadius: "50%",
-                width: 22,
-                height: 22,
-                cursor: "pointer",
-              }}
-            >
-              ×
-            </button>
+            <div>
+              <label>Category of the dish:</label>
+              <select
+                value={food.category?.id || ""}
+                onChange={(e) =>
+                  setFood({
+                    ...food,
+                    category: { id: e.target.value },
+                  })
+                }
+                required
+              >
+                <option value="">Select</option>
+                {categories.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-        ))}
+
+          <label>Description:</label>
+          <textarea
+            value={food.description}
+            onChange={(e) =>
+              setFood({ ...food, description: e.target.value })
+            }
+          />
+
+          <button className="submit-btn">Save Changes</button>
+        </form>
       </div>
 
+      {confirmDelete && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>Delete Food?</h3>
+            <p>This action cannot be undone.</p>
 
-        <div style={{ marginTop: 16 }}>
-          <button className="btn btn-primary" type="submit">
-            Save Changes
-          </button>
+            <div className="modal-actions">
+              <button
+                className="modal-cancel"
+                onClick={() => setConfirmDelete(false)}
+              >
+                Cancel
+              </button>
+              <button className="modal-delete" onClick={handleDelete}>
+                Delete
+              </button>
+            </div>
+          </div>
         </div>
-      </form>
+      )}
+
     </div>
   );
 }

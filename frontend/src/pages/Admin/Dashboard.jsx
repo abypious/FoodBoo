@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import API from "../../api/axiosConfig";
 import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
+import { Users, Utensils, CalendarCheck, MessageSquare } from "lucide-react";
 
 export default function AdminDashboard() {
   const [summary, setSummary] = useState({
@@ -11,12 +12,12 @@ export default function AdminDashboard() {
     bookings: 0,
     reviews: 0,
   });
-  const [loading, setLoading] = useState(true);
 
-  const nav = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const load = async () => {
+    const loadData = async () => {
       try {
         const [emp, foods, bookings, reviews] = await Promise.all([
           API.get("/api/employees"),
@@ -24,45 +25,67 @@ export default function AdminDashboard() {
           API.get("/api/bookings/all"),
           API.get("/api/reviews"),
         ]);
+
         setSummary({
-          employees: emp.data.data?.length ?? emp.data.length ?? 0,
-          foods: foods.data.data?.length ?? foods.data.length ?? 0,
-          bookings: bookings.data.data?.length ?? bookings.data.length ?? 0,
-          reviews: reviews.data.data?.length ?? reviews.data.length ?? 0,
+          employees: emp.data.data?.length ?? emp.data.length,
+          foods: foods.data.data?.length ?? foods.data.length,
+          bookings: bookings.data.data?.length ?? bookings.data.length,
+          reviews: reviews.data.data?.length ?? reviews.data.length,
         });
       } finally {
         setLoading(false);
       }
     };
-    load();
+
+    loadData();
   }, []);
 
-  if (loading) return <div className="p-4">Loading dashboard...</div>;
+  if (loading) return <div className="dash-loading">Loading dashboard...</div>;
 
   return (
     <div className="dashboard-container">
       <h2 className="dash-title">Admin Dashboard</h2>
 
       <div className="dash-grid">
-        <div className="dash-card" onClick={() => nav("/admin/employees")}>
-          <div className="dash-label">Employees</div>
-          <div className="dash-value">{summary.employees}</div>
-        </div>
+        <DashCard
+          label="Employees"
+          value={summary.employees}
+          icon={<Users size={32} />}
+          onClick={() => navigate("/admin/employees")}
+        />
 
-        <div className="dash-card" onClick={() => nav("/admin/foods")}>
-          <div className="dash-label">Foods</div>
-          <div className="dash-value">{summary.foods}</div>
-        </div>
+        <DashCard
+          label="Foods"
+          value={summary.foods}
+          icon={<Utensils size={32} />}
+          onClick={() => navigate("/admin/foods")}
+        />
 
-        <div className="dash-card" onClick={() => nav("/admin/bookings")}>
-          <div className="dash-label">Bookings</div>
-          <div className="dash-value">{summary.bookings}</div>
-        </div>
+        <DashCard
+          label="Bookings"
+          value={summary.bookings}
+          icon={<CalendarCheck size={32} />}
+          onClick={() => navigate("/admin/bookings")}
+        />
 
-        <div className="dash-card" onClick={() => nav("/admin/reviews")}>
-          <div className="dash-label">Reviews</div>
-          <div className="dash-value">{summary.reviews}</div>
-        </div>
+        <DashCard
+          label="Reviews"
+          value={summary.reviews}
+          icon={<MessageSquare size={32} />}
+          onClick={() => navigate("/admin/reviews")}
+        />
+      </div>
+    </div>
+  );
+}
+
+function DashCard({ label, value, icon, onClick }) {
+  return (
+    <div className="dash-card" onClick={onClick}>
+      <div className="dash-icon">{icon}</div>
+      <div className="dash-info">
+        <div className="dash-label">{label}</div>
+        <div className="dash-value">{value}</div>
       </div>
     </div>
   );

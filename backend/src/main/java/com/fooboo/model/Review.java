@@ -1,5 +1,7 @@
 package com.fooboo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -28,10 +30,11 @@ public class Review {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "food_item_id")
-    private FoodItem foodItem;
+    @OneToOne
+    @JoinColumn(name = "booking_id", unique = true, nullable = false)
+    @JsonManagedReference
+    private Booking booking;
 }

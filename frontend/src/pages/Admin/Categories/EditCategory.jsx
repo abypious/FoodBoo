@@ -1,91 +1,184 @@
-// src/pages/Admin/Categories/EditCategory.jsx
 import React, { useEffect, useState } from "react";
 import API from "../../../api/axiosConfig";
 import { useNavigate, useParams } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+import toast from "react-hot-toast";
+import "./CategoryForm.css";
 
 export default function EditCategory() {
   const { id } = useParams();
   const nav = useNavigate();
+
   const [loading, setLoading] = useState(true);
-  const [category, setCategory] = useState({ name: "", description: "", imageUrl: "" });
+  const [category, setCategory] = useState({
+    name: "",
+    description: "",
+    imageUrl: "",
+  });
   const [uploading, setUploading] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   useEffect(() => {
-    const load = async () => {
-      try {
-        const res = await API.get(`/api/categories`);
-        const data = res.data.data ?? res.data;
-        const c = data.find((x) => String(x.id) === String(id));
-        if (!c) throw new Error("Not found");
-        setCategory(c);
-      } catch (err) {
-        console.error(err);
-        alert("Category load failed");
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
+    API.get(`/api/categories`)
+      .then((r) => {
+        const list = r.data.data ?? r.data;
+        const found = list.find((c) => String(c.id) === String(id));
+
+        if (!found) {
+          toast.error("Category not found");
+          nav("/admin/categories");
+          return;
+        }
+
+        setCategory(found);
+      })
+      .catch(() => toast.error("Failed to load category"))
+      .finally(() => setLoading(false));
   }, [id]);
 
   const handleUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
     setUploading(true);
+
     try {
       const fd = new FormData();
       fd.append("file", file);
+
       const res = await API.post("/api/upload/category", fd, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+
       const url = res.data.data ?? res.data;
-      setCategory({ ...category, imageUrl: url });
-    } catch (err) {
-      console.error(err);
-      alert("Upload failed");
+
+      setCategory((prev) => ({ ...prev, imageUrl: url }));
+      toast.success("Image uploaded");
+    } catch {
+      toast.error("Image upload failed");
     } finally {
       setUploading(false);
     }
   };
 
+  const removeImage = async () => {
+    const ok = await showConfirm(
+      "Remove Image",
+      "Are you sure you want to remove this image?"
+    );
+    if (!ok) return;
+
+    setCategory((prev) => ({ ...prev, imageUrl: "" }));
+    toast.success("Image removed");
+  };
+
   const submit = async (e) => {
     e.preventDefault();
+
     try {
-      // Backend doesn't have PUT in your controller; easiest is delete+create or modify service.
-      // For now call add (if id exists backend may create duplicate). If you have update, call it.
-      await API.put(`/api/categories/${id}`, category).catch(async () => {
-        // fallback: if no put, delete then add with same id not ideal. Prefer to implement update backend.
-        alert("Update failed. Ensure backend supports PUT /api/categories/{id}");
-      });
-      alert("Updated");
+      await API.put(`/api/categories/${id}`, category);
+      toast.success("Category updated");
       nav("/admin/categories");
-    } catch (err) {
-      console.error(err);
+    } catch {
+      toast.error("Failed to update category");
     }
   };
 
   if (loading) return <div className="p-4">Loading...</div>;
 
   return (
-    <div className="container mt-3">
-      <h3>Edit Category</h3>
-      <form onSubmit={submit} style={{ maxWidth: 600 }}>
-        <label>Name</label>
-        <input className="form-control" value={category.name} onChange={(e) => setCategory({ ...category, name: e.target.value })} required />
+    <div className="category-page">
+      <div className="form-card">
+          <div className="top-row">
+            <button className="back-btn" onClick={() => nav(-1)}>
+              <ArrowLeft size={18} /> Go Back
+            </button>
+  
+            <h1 className="title">
+              Edit <span>Category</span>
+            </h1>
+  
+            <button
+              className="danger-btn"
+              onClick={() => setConfirmDelete(true)}
+            >
+              Delete Category
+            </button>  
+          </div>
 
-        <label className="mt-2">Description</label>
-        <textarea className="form-control" value={category.description} onChange={(e) => setCategory({ ...category, description: e.target.value })} />
 
-        <label className="mt-2">Image</label>
-        <input type="file" accept="image/*" onChange={handleUpload} />
-        {uploading && <div>Uploading...</div>}
-        {category.imageUrl && <img src={category.imageUrl} alt="preview" style={{ width: 160, marginTop: 8 }} />}
+        <div className="upload-box">
+          {category.imageUrl ? (
+            <div className="preview-wrapper">
+              <img src={category.imageUrl} className="preview-img" />
 
-        <div style={{ marginTop: 12 }}>
-          <button className="btn btn-primary" type="submit">Save</button>
-          <button type="button" className="btn btn-secondary" onClick={() => nav("/admin/categories")} style={{ marginLeft: 8 }}>Cancel</button>
+              <button className="remove-img" onClick={removeImage}>
+                ×
+              </button>
+            </div>
+          ) : (
+            <label className="placeholder">
+              <span className="upload-icon">⭡</span>
+              <p>Upload Category Image</p>
+              <input type="file" accept="image/*" onChange={handleUpload} />
+            </label>
+          )}
         </div>
-      </form>
+
+        {uploading && <p style={{ marginTop: 10 }}>Uploading...</p>}
+
+        <form className="form-section" onSubmit={submit}>
+          <label>Name of the category:</label>
+          <input
+            value={category.name}
+            onChange={(e) =>
+              setCategory({ ...category, name: e.target.value })
+            }
+            required
+          />
+
+          <label>Description:</label>
+          <textarea
+            value={category.description}
+            onChange={(e) =>
+              setCategory({ ...category, description: e.target.value })
+            }
+          />
+
+          <button className="submit-btn">Save Changes</button>
+        </form>
+      </div>
     </div>
   );
+}
+
+
+function showConfirm(title, message) {
+  return new Promise((resolve) => {
+    const modal = document.createElement("div");
+    modal.className = "confirm-overlay";
+
+    modal.innerHTML = `
+      <div class="confirm-box">
+        <h3>${title}</h3>
+        <p>${message}</p>
+        <div class="confirm-actions">
+          <button class="confirm-cancel">Cancel</button>
+          <button class="confirm-ok">Yes</button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    modal.querySelector(".confirm-cancel").onclick = () => {
+      modal.remove();
+      resolve(false);
+    };
+
+    modal.querySelector(".confirm-ok").onclick = () => {
+      modal.remove();
+      resolve(true);
+    };
+  });
 }

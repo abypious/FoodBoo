@@ -18,8 +18,8 @@ export default function Login() {
 
     try {
       const user = await login(email, password);
-      if (user.role === "ROLE_ADMIN") navigate("/admin/dashboard");
-      else navigate("/employee/categories");
+      if (user.role === "ROLE_ADMIN") navigate("/admin/dashboard", { replace: true });
+      else navigate("/employee/categories", { replace: true });
     } catch {
       alert("Invalid Credentials");
     }
@@ -41,7 +41,7 @@ export default function Login() {
           />
           {touched && !email && (
             <p className={styles.error}>Enter a registered Email address</p>
-          )}
+          )}<br />
 
           {/* PASSWORD */}
           <label>Password</label>
@@ -53,16 +53,7 @@ export default function Login() {
           />
           {touched && !password && (
             <p className={styles.error}>Enter a valid password</p>
-          )}
-
-          {/* TERMS */}
-          <div className={styles.checkboxRow}>
-            <input type="checkbox" />
-            <span>
-              I agree to <strong>Terms & Conditions</strong> and{" "}
-              <em>privacy Policy</em>
-            </span>
-          </div>
+          )}<br />
 
           {/* SIGN IN BUTTON */}
           <button className={styles.signinBtn}>Sign In</button>

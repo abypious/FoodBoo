@@ -36,11 +36,6 @@ export default function FoodList() {
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-
-        <button className={styles.filterBtn}>
-          <SlidersHorizontal size={18} />
-          Filter
-        </button>
       </div>
 
       <div className={styles.orangeBar}></div>

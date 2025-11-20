@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom";
 import useFoodCategoryStore from "../../../store/foodCategoryStore";
 import CategoryCard from "../../../components/cards/CategoryCard";
 import styles from "./FoodCategories.module.css";
-import {  Search } from "lucide-react";
-
+import { Search } from "lucide-react";
 
 export default function FoodCategories() {
   const { categories, fetchCategories, loading } = useFoodCategoryStore();
@@ -27,14 +26,16 @@ export default function FoodCategories() {
 
   return (
     <div className={styles.pageCard}>
-
+      
       <div className={styles.searchContainer}>
-          <Search size={18} className={styles.searchIcon} />
-          <input
-            placeholder="What kind of food you want?"
-            className={styles.searchInput}
-          />
-        </div>
+        <Search size={18} className={styles.searchIcon} />
+        <input
+          placeholder="What kind of food you want?"
+          className={styles.searchInput}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+      </div>
 
       <div className={styles.orangeBar}></div>
 

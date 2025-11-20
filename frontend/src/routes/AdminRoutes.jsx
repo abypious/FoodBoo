@@ -3,7 +3,7 @@ import AdminLayout from "../components/layout/AdminLayout/AdminLayout";
 
 import AdminDashboard from "../pages/Admin/Dashboard";
 import Booking from "../pages/Admin/Booking";
-import Reviews from "../pages/Admin/Reviews";
+import Reviews from "../pages/Admin/foodreview/Reviews";
 
 // categories
 import CategoriesList from "../pages/Admin/Categories/Categories";
@@ -15,6 +15,7 @@ import FoodList from "../pages/Admin/Food/FoodList";
 import AddFood from "../pages/Admin/Food/AddFood";
 import EditFood from "../pages/Admin/Food/EditFood";
 import EmployeesList from "../pages/Admin/EmployeesList";
+import FoodReviews from "../pages/Admin/foodreview/FoodReviews";
 
 const AdminRoutes = () => (
   <AdminLayout>
@@ -38,7 +39,7 @@ const AdminRoutes = () => (
       <Route path="foods/category/:categoryId" element={<FoodList />} />
 
       <Route path="employees" element={<EmployeesList />} />
-      <Route path="foods/details/:id" element={<FoodDetails />} />
+      <Route path="foods/reviews/:foodId" element={<FoodReviews />} />
 
     </Routes>
   </AdminLayout>

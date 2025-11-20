@@ -7,7 +7,6 @@ import FoodDetails from "../pages/Employee/FoodDetails";
 import BookingSuccess from "../pages/Employee/BookingSuccess";
 
 import MyBookings from "../pages/Employee/MyBookings";
-import MyPoints from "../pages/Employee/MyPoints";
 import MyReviews from "../pages/Employee/MyReviews";
 
 export default function EmployeeRoutes() {
@@ -20,7 +19,6 @@ export default function EmployeeRoutes() {
         <Route path="booking-success" element={<BookingSuccess />} />
 
         <Route path="bookings" element={<MyBookings />} />
-        <Route path="points" element={<MyPoints />} />
         <Route path="reviews" element={<MyReviews />} />
 
         <Route path="*" element={<FoodCategories />} />

@@ -10,12 +10,17 @@ import com.fooboo.security.AppUserDetails;
 import com.fooboo.service.BookingService;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,19 +36,30 @@ public class BookingController {
         this.userRepo = userRepo;
     }
 
-    //  DTO 
     @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class BookingRequest {
+
         private Long foodItemId;
+
+        @JsonFormat(shape = JsonFormat.Shape.STRING)
         private MealTime mealTime;
+
+        @JsonFormat(pattern = "yyyy-MM-dd")
+        private LocalDate date;
     }
 
-    //  CREATE BOOKING 
+    // CREATE BOOKING
     @PostMapping
     @PreAuthorize("hasRole('EMPLOYEE')")
     public ResponseEntity<SuccessResponse> createBooking(
             @AuthenticationPrincipal AppUserDetails userDetails,
             @RequestBody BookingRequest request) {
+
+        System.out.println("REQ → foodItemId = " + request.getFoodItemId());
+        System.out.println("REQ → mealTime = " + request.getMealTime());
+        System.out.println("REQ → date = " + request.getDate());
 
         User user = userRepo.findByEmail(userDetails.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
@@ -51,7 +67,8 @@ public class BookingController {
         Booking booking = service.createBooking(
                 user,
                 request.getFoodItemId(),
-                request.getMealTime()
+                request.getMealTime(),
+                request.getDate()
         );
 
         return ResponseEntity.ok(
@@ -64,7 +81,7 @@ public class BookingController {
         );
     }
 
-    //  MY BOOKINGS 
+    // MY BOOKINGS 
     @GetMapping("/my")
     @PreAuthorize("hasRole('EMPLOYEE')")
     public ResponseEntity<SuccessResponse> getMyBookings(
@@ -85,7 +102,7 @@ public class BookingController {
         );
     }
 
-    //  ALL BOOKINGS
+    // ALL BOOKINGS
     @GetMapping("/all")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<SuccessResponse> getAllBookings() {
@@ -102,7 +119,7 @@ public class BookingController {
         );
     }
 
-    //  CANCEL BOOKING 
+    // CANCEL BOOKING 
     @PutMapping("/cancel/{id}")
     @PreAuthorize("hasRole('EMPLOYEE')")
     public ResponseEntity<SuccessResponse> cancelBooking(

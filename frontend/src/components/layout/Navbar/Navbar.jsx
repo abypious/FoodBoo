@@ -26,7 +26,11 @@ export default function Navbar() {
 
       {/* RIGHT: Links, signout, user */}
       <div className={styles.right}>
-        <Link to="/home">Home</Link>
+        <Link 
+          to={user?.role === "ROLE_ADMIN" ? "/admin/dashboard" : "/employee/categories"}
+        >
+          Home
+        </Link>
         <Link to="/contact">Contact Us</Link>
 
         <div className={styles.divider}></div>
@@ -36,10 +40,7 @@ export default function Navbar() {
         <span className={styles.username}>{user?.name}</span>
 
         <div className={styles.avatar}>
-          <img
-            src={user?.avatarUrl || "/default-avatar.png"}
-            alt="user avatar"
-          />
+          <img src="/Profile.png"/>
         </div>
       </div>
     </nav>

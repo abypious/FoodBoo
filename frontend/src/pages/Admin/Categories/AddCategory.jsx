@@ -1,73 +1,122 @@
-// src/pages/Admin/Categories/AddCategory.jsx
 import React, { useState } from "react";
 import API from "../../../api/axiosConfig";
 import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+import toast from "react-hot-toast";
+import "./CategoryForm.css";
 
 export default function AddCategory() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [uploading, setUploading] = useState(false);
+
   const nav = useNavigate();
 
   const handleUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
     setUploading(true);
+
     try {
       const fd = new FormData();
       fd.append("file", file);
+
       const res = await API.post("/api/upload/category", fd, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      const url = res.data.data;
-        if (!url || typeof url !== "string") {
-          console.error("Upload response invalid:", res.data);
-          alert("Image upload failed — invalid response");
-          return;
-        }
-        setImageUrl(url);
- 
+
+      const url = res.data.data ?? res.data;
+
+      if (!url) {
+        toast.error("Invalid upload response");
+        return;
+      }
+
+      setImageUrl(url);
+      toast.success("Image uploaded!");
     } catch (err) {
-      console.error("Upload failed", err);
-      alert("Upload failed");
+      toast.error("Image upload failed");
     } finally {
       setUploading(false);
     }
   };
 
+  const removeImage = () => {
+    setImageUrl("");
+    toast("Image removed");
+  };
+
   const submit = async (e) => {
     e.preventDefault();
+
+    if (!imageUrl) {
+      toast.error("Please upload an image");
+      return;
+    }
+
     try {
       await API.post("/api/categories", { name, description, imageUrl });
-      alert("Category added");
+
+      toast.success("Category added successfully!");
       nav("/admin/categories");
     } catch (err) {
-      console.error("Add category", err);
-      alert("Failed to add");
+      toast.error("Failed to add category");
     }
   };
 
   return (
-    <div className="container mt-3">
-      <h3>Add Category</h3>
-      <form onSubmit={submit} style={{ maxWidth: 600 }}>
-        <label>Name</label>
-        <input className="form-control" value={name} onChange={(e) => setName(e.target.value)} required />
+    <div className="category-page">
+       <div className="form-card">
+      <button className="back-btn" onClick={() => nav(-1)}>
+        <ArrowLeft size={18} /> Go Back
+      </button>
 
-        <label className="mt-2">Description</label>
-        <textarea className="form-control" value={description} onChange={(e) => setDescription(e.target.value)} />
+      <h1 className="title">
+        Add New <span>Category</span>
+      </h1>
 
-        <label className="mt-2">Image</label>
-        <input type="file" accept="image/*" onChange={handleUpload} />
-        {uploading && <div>Uploading...</div>}
-        {imageUrl && <img src={imageUrl} alt="preview" style={{ width: 160, marginTop: 8 }} />}
+     
+        {/* --- IMAGE UPLOAD SECTION --- */}
+        <div className="upload-box">
+          {imageUrl ? (
+            <div className="preview-wrapper">
+              <img src={imageUrl} className="preview-img" />
 
-        <div style={{ marginTop: 12 }}>
-          <button className="btn btn-primary" type="submit">Create</button>
-          <button type="button" className="btn btn-secondary" onClick={() => nav("/admin/categories")} style={{ marginLeft: 8 }}>Cancel</button>
+              <button className="remove-img" onClick={removeImage}>
+                ×
+              </button>
+            </div>
+          ) : (
+            <label className="placeholder">
+              <span className="upload-icon">⭡</span>
+              <p>{uploading ? "Uploading..." : "Upload Category Image"}</p>
+              <input type="file" accept="image/*" onChange={handleUpload} />
+            </label>
+          )}
         </div>
-      </form>
+
+        {/* --- FORM FIELDS --- */}
+        <form className="form-section" onSubmit={submit}>
+          <label>Name of the category:</label>
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+
+          <label>Description:</label>
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+
+          <button className="submit-btn" type="submit">
+            Add Category
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

@@ -1,42 +1,73 @@
 .dashboard-container {
-  padding: 20px;
+  padding: 24px;
   margin-top: 20px;
 }
 
 .dash-title {
-  margin-bottom: 18px;
-  font-size: 26px;
-  font-weight: 600;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #222;
 }
 
+.dash-loading {
+  padding: 2rem;
+  text-align: center;
+  font-size: 18px;
+}
+
+/* GRID */
 .dash-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 22px;
 }
 
+/* PREMIUM CARD */
 .dash-card {
-  background: #fff;
-  padding: 20px;
-  border-radius: 14px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 22px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
   cursor: pointer;
-  transition: 0.2s ease-in-out;
-  border: 1px solid #eee;
+  transition: 0.25s ease;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+  border: 1px solid rgba(240, 240, 240, 0.65);
 }
 
 .dash-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  transform: translateY(-6px);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.12);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* ICON */
+.dash-icon {
+  background: linear-gradient(135deg, #ff9500, #ff7300);
+  color: white;
+  padding: 14px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* TEXT */
+.dash-info {
+  flex-grow: 1;
 }
 
 .dash-label {
   font-size: 15px;
   opacity: 0.7;
+  margin-bottom: 4px;
 }
 
 .dash-value {
-  font-size: 34px;
-  margin-top: 8px;
+  font-size: 32px;
   font-weight: 700;
+  color: #333;
 }

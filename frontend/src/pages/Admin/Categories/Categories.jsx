@@ -32,9 +32,21 @@ export default function CategoriesList() {
 
   return (
     <div className="admin-container">
-      <div className="top-bar">
-        <input placeholder="What kind of category are you looking for?" />
-        <button className="filter-btn">Filter ▼</button>
+      <div className="toolbar">
+        <div className="search-wrapper">
+          <span className="search-icon">🔍</span>
+          <input
+            className="search-input"
+            placeholder="Search categories..."
+          />
+        </div>
+
+        <button
+          className="premium-add-btn"
+          onClick={() => nav("/admin/categories/add")}
+        >
+          ✚ Add Category
+        </button>
       </div>
 
       <h4 className="list-title">Categories</h4>
@@ -62,18 +74,11 @@ export default function CategoriesList() {
                 >
                   Edit
                 </button>
-                <button className="delete-btn" onClick={() => remove(c.id)}>
-                  Delete
-                </button>
               </div>
             </div>
           </div>
         ))}
       </div>
-
-      <button className="add-btn" onClick={() => nav("/admin/categories/add")}>
-        + Add Category
-      </button>
     </div>
   );
 }

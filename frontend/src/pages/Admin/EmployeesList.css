@@ -1,20 +1,60 @@
-.employees-header {
+/* Main container */
+.admin-container {
+  background: #fff;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  margin-top: 60px;
+  margin-left: 20px;
+}
+
+/* --- PREMIUM TOOLBAR --- */
+.toolbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 18px;
+  gap: 16px;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(12px);
+  border-radius: 14px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
 }
 
-.add-btn {
-  background: orange;
-  color: #fff;
-  border: none;
-  padding: 10px 14px;
+/* Search bar */
+.search-wrapper {
+  flex: 1;
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #777;
+  pointer-events: none;
+}
+
+.search-input {
+  width: 95%;
+  height: 44px;
+  padding: 0 14px 0 40px;
   border-radius: 10px;
-  cursor: pointer;
+  border: 1px solid #ddd;
   font-size: 15px;
+  background: #fff;
+  transition: 0.2s ease;
 }
 
+.search-input:focus {
+  border-color: orange;
+  box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.25);
+  outline: none;
+}
+
+/* Table container */
 .table-wrapper {
   overflow-x: auto;
   background: #fff;
@@ -23,46 +63,56 @@
   box-shadow: 0 4px 14px rgba(0,0,0,0.06);
 }
 
+/* Table */
 .employees-table {
   width: 100%;
   border-collapse: collapse;
-}
-
-.employees-table th,
-.employees-table td {
-  padding: 12px;
-  border-bottom: 1px solid #eee;
-  text-align: left;
+  font-size: 15px;
 }
 
 .employees-table th {
   font-weight: 600;
   background: #fafafa;
+  padding: 12px;
+  border-bottom: 2px solid #eee;
 }
 
-.edit-btn,
-.delete-btn {
-  padding: 6px 10px;
-  margin-right: 8px;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
+.employees-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
 }
 
-.edit-btn {
-  border: 1px solid #555;
-  background: #f4f4f4;
+.employees-table tr:hover td {
+  background: #fef7ee;
+  transition: 0.15s ease;
 }
 
+/* Actions column */
+.actions-col {
+  text-align: center;
+}
+
+/* Delete button */
 .delete-btn {
   border: 1px solid red;
   background: #ffeaea;
   color: red;
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
+.delete-btn:hover {
+  background: #ffdadb;
+  border-color: #d80000;
+}
+
+/* No data row */
 .no-data {
   text-align: center;
-  padding: 20px;
+  padding: 18px;
   font-size: 15px;
   opacity: 0.6;
 }

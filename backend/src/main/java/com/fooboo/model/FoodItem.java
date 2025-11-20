@@ -35,9 +35,5 @@ public class FoodItem {
 
     @OneToMany(mappedBy = "foodItem", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Review> reviews;
-
-    @OneToMany(mappedBy = "foodItem", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
     private List<Booking> bookings;
 }
