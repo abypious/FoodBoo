@@ -10,7 +10,7 @@ export default function AddFood() {
   const [description, setDescription] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [categories, setCategories] = useState([]);
-  const [imageUrls, setImageUrls] = useState(["", "", "", ""]);
+  const [imageUrls, setImageUrls] = useState([null, null, null, null]);
   const [uploadingIndex, setUploadingIndex] = useState(null);
 
   const nav = useNavigate();
@@ -86,12 +86,29 @@ export default function AddFood() {
       </h1>
 
       
-        {/* IMAGE UPLOAD 4-GRID */}
         <div className="upload-grid">
           {[0, 1, 2, 3].map((i) => (
             <label key={i} className="upload-box">
+
               {imageUrls[i] ? (
-                <img src={imageUrls[i]} className="preview-img" alt="" />
+                <div className="preview-wrapper">
+                  <img src={imageUrls[i]} className="preview-img" alt="Food" />
+
+                  <button
+                    type="button"
+                    className="remove-img"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setImageUrls((prev) => {
+                        const updated = [...prev];
+                        updated[i] = null;
+                        return updated;
+                      });
+                    }}
+                  >
+                    ×
+                  </button>
+                </div>
               ) : (
                 <div className="placeholder">
                   <span className="upload-icon">⭡</span>
@@ -106,13 +123,15 @@ export default function AddFood() {
               />
 
               {uploadingIndex === i && (
-                <p className="uploading-text">Uploading...</p>
+                <div className="upload-spinner">
+                  <div className="spinner"></div>
+                </div>
               )}
             </label>
           ))}
         </div>
 
-        {/* FORM */}
+
         <form onSubmit={submit} className="form-section">
           <div className="form-row">
             <div>
@@ -122,7 +141,7 @@ export default function AddFood() {
                 onChange={(e) => setName(e.target.value)}
                 required
               />
-            </div>
+            </div><br />
 
             <div>
               <label>Category of the dish:</label>

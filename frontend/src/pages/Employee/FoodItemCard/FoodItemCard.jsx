@@ -21,7 +21,6 @@ export default function FoodItemCard({ food, onClick }) {
 
   return (
     <div className={styles.card} onClick={onClick}>
-      {/* Image */}
       <div className={styles.imageWrapper}>
         <img src={images[index]} className={styles.image} alt={food.name} />
 
@@ -50,16 +49,9 @@ export default function FoodItemCard({ food, onClick }) {
         )}
       </div>
 
-      {/* Name */}
       <div className={styles.name}>{food.name}</div>
-
-      {/* Stars */}
       <div className={styles.stars}>{stars}</div>
-
-      {/* Availability */}
       <div className={styles.available}>Available</div>
-
-      {/* Description */}
       <p className={styles.desc}>
         {food.description || "No description available"}
       </p>

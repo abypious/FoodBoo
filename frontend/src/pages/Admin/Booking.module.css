@@ -1,6 +1,6 @@
 .container {
   padding: 2rem;
-  background: #fff;
+  background: var(--color-bg);
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   max-width: 1100px;
@@ -35,7 +35,7 @@
 }
 
 .table thead {
-  background: #f7f7f7;
+  background: var(--color-bg);
 }
 
 .table th,
@@ -87,11 +87,56 @@
   text-transform: capitalize;
 }
 
-.statusPending {
-  background: #fdf2c4;
-  color: #8a6a00;
-  padding: 4px 10px;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  text-transform: capitalize;
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
 }
+
+.filterRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dateInput {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.clearBtn {
+  padding: 8px 14px;
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.clearBtn:hover {
+  background: #e54444;
+}
+
+.statusSelect {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filterRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+

@@ -19,7 +19,6 @@ export default function FoodDetails() {
   const [index, setIndex] = useState(0);
   const [reviews, setReviews] = useState([]);
 
-  // NEW: modal state
   const [confirmOpen, setConfirmOpen] = useState(false);
 
   useEffect(() => {
@@ -41,7 +40,6 @@ export default function FoodDetails() {
 
   if (loading || !food) return <h2>Loading...</h2>;
 
-  // Rating
   const avgRating =
     reviews.length > 0
       ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
@@ -55,7 +53,6 @@ export default function FoodDetails() {
     ? food.imageUrls
     : [food.imageUrl || "/placeholder-food.png"];
 
-  // Dates
   const today = new Date();
   const tomorrow = new Date(today);
   tomorrow.setDate(today.getDate() + 1);
@@ -66,12 +63,10 @@ export default function FoodDetails() {
   const minDate = toDate(tomorrow);
   const maxDate = toDate(nextMonth);
 
-  // When user clicks "Proceed"
   const handleConfirmBooking = () => {
     setConfirmOpen(true);
   };
 
-  // When user confirms inside modal
   const confirmBooking = async () => {
     setConfirmOpen(false);
 
@@ -102,7 +97,6 @@ export default function FoodDetails() {
       <div className={styles.layout}>
         <div className={styles.left}>
 
-          {/* SLIDER */}
           <div className={styles.imageWrapper}>
             <img src={images[index]} className={styles.image} />
 
@@ -134,16 +128,13 @@ export default function FoodDetails() {
             </div>
           </div>
 
-          {/* Title */}
           <h2 className={styles.foodName}>{food.name}</h2>
           <div className={styles.available}>Available</div>
 
-          {/* Rating */}
           <div className={styles.rating}>
             {stars} <span>({avgRating || 0}) Average Rating</span>
           </div>
 
-          {/* Reservation */}
           <h3 className={styles.sectionTitle}>Make A Reservation</h3>
 
           <form
@@ -178,7 +169,6 @@ export default function FoodDetails() {
             <button className={styles.proceedBtn}>Proceed →</button>
           </form>
 
-          {/* Reviews */}
           <h3 className={styles.sectionTitle}>What People Are Saying</h3>
 
           <div className={styles.reviewsBox}>
@@ -205,7 +195,6 @@ export default function FoodDetails() {
         </div>
       </div>
 
-      {/* --- CONFIRM MODAL --- */}
       {confirmOpen && (
         <ConfirmModal
           message={`Book ${food.name} for ${mealTime} on ${date}?`}

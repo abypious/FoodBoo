@@ -21,7 +21,7 @@ export default function App() {
           style: {
             borderRadius: "10px",
             background: "#333",
-            color: "#fff",
+            color: "var(--color-bg)",
           },
         }}
       />

@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    // 🔹 Centralized error response builder
+    // Centralized error response builder
     private ResponseEntity<ErrorResponse> buildErrorResponse(Exception ex, HttpStatus status, WebRequest request) {
 
         // Fallback message if null/empty
@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
     }
 
 
-    // 🔹 Validation Errors from @Valid (RequestBody)
+    // Validation Errors from @Valid (RequestBody)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidation(MethodArgumentNotValidException ex, WebRequest request) {
 
@@ -64,7 +64,7 @@ public class GlobalExceptionHandler {
         );
     }
 
-    // 🔹 Validation Errors from @Validated (RequestParam, PathVariable)
+    // Validation Errors from @Validated (RequestParam, PathVariable)
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handleConstraintViolations(ConstraintViolationException ex, WebRequest request) {
 
@@ -81,7 +81,7 @@ public class GlobalExceptionHandler {
     }
 
 
-    // 🔹 Custom Exceptions (404, 400, 401)
+    // Custom Exceptions (404, 400, 401)
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNotFound(ResourceNotFoundException ex, WebRequest req) {
         return buildErrorResponse(ex, HttpStatus.NOT_FOUND, req);
@@ -98,20 +98,20 @@ public class GlobalExceptionHandler {
     }
 
 
-    // 🔹 403 Forbidden
+    // 403 Forbidden
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorResponse> handleAccessDenied(AccessDeniedException ex, WebRequest req) {
         return buildErrorResponse(ex, HttpStatus.FORBIDDEN, req);
     }
 
-    // 🔹 Database Errors (Optional but smart)
+    // Database Errors (Optional but smart)
     @ExceptionHandler(DataAccessException.class)
     public ResponseEntity<ErrorResponse> handleDatabaseErrors(DataAccessException ex, WebRequest req) {
         log.error("Database error: ", ex);
         return buildErrorResponse(new BadRequestException("Database error occurred."), HttpStatus.BAD_REQUEST, req);
     }
 
-    // 🔹 Global Fallback Handler
+    // Global Fallback Handler
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleAllExceptions(Exception ex, WebRequest req) {
         log.error("Unhandled exception occurred", ex);

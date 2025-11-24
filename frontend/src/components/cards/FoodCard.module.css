@@ -1,10 +1,14 @@
 .card {
-  background: #fff;
+  background: var(--color-bg);
   border-radius: 10px;
   border: 1px solid #eee;
   overflow: hidden;
   transition: 0.2s ease;
   cursor: pointer;
+
+  display: flex;               /* ← required */
+  flex-direction: column;      /* ← required */
+  height: 100%;                /* ← required */
 }
 
 .card:hover {
@@ -45,6 +49,7 @@
 
 .body {
   padding: 0.8rem;
+  flex-grow: 1;                /* ← THIS aligns all footers */
 }
 
 .body h3 {

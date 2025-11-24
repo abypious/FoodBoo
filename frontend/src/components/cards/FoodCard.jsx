@@ -2,9 +2,15 @@ import { useState } from "react";
 import styles from "./FoodCard.module.css";
 
 export default function FoodCard({ food, onClick, children }) {
-  const images = food.imageUrls?.length
-    ? food.imageUrls
-    : [food.imageUrl || "/placeholder-food.png"];
+  const rawImages = Array.isArray(food.imageUrls) ? food.imageUrls : [];
+
+  const images = rawImages.filter(
+    (url) => url && typeof url === "string" && url.trim() !== ""
+  );
+
+  if (images.length === 0) {
+    images.push(food.imageUrl || "/placeholder-food.png");
+  }
 
   const [index, setIndex] = useState(0);
 

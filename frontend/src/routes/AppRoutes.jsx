@@ -4,6 +4,7 @@ import ProtectedRoute from "../components/common/ProtectedRoute";
 import AdminRoutes from "./AdminRoutes";
 import EmployeeRoutes from "./EmployeeRoutes";
 import ContactUs from "../pages/Contact/ContactUs";
+import Profile from "../pages/Contact/Profile";
 
 export default function AppRoutes() {
   return (
@@ -11,6 +12,8 @@ export default function AppRoutes() {
       <Route path="/" element={<Login />} />
 
       <Route path="/contact" element={<ContactUs />} /> 
+
+      <Route path="/profile" element={<Profile />} />
 
       <Route
         path="/admin/*"

@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";   // ⬅️ ADD THIS
 import styles from "./ContactUs.module.css";
 import toast from "react-hot-toast";
 
 export default function ContactUs() {
+  const navigate = useNavigate(); // ⬅️ ADD THIS
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -31,6 +34,12 @@ export default function ContactUs() {
 
   return (
     <div className={styles.page}>
+
+      {/* HOME BUTTON — NEW */}
+      <button className={styles.homeBtn} onClick={() => navigate(-1)}>
+        ← Home
+      </button>
+
       <h1 className={styles.title}>
         Contact <span>Us</span>
       </h1>

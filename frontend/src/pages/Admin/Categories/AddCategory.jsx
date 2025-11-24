@@ -78,26 +78,28 @@ export default function AddCategory() {
       </h1>
 
      
-        {/* --- IMAGE UPLOAD SECTION --- */}
         <div className="upload-box">
           {imageUrl ? (
             <div className="preview-wrapper">
               <img src={imageUrl} className="preview-img" />
-
-              <button className="remove-img" onClick={removeImage}>
-                ×
-              </button>
+              <button className="remove-img" onClick={removeImage}>×</button>
             </div>
           ) : (
             <label className="placeholder">
               <span className="upload-icon">⭡</span>
-              <p>{uploading ? "Uploading..." : "Upload Category Image"}</p>
+              <p>Upload Category Image</p>
               <input type="file" accept="image/*" onChange={handleUpload} />
             </label>
           )}
+
+          {uploading && (
+            <div className="upload-spinner">
+              <div className="spinner"></div>
+            </div>
+          )}
         </div>
 
-        {/* --- FORM FIELDS --- */}
+
         <form className="form-section" onSubmit={submit}>
           <label>Name of the category:</label>
           <input

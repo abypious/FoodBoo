@@ -33,12 +33,10 @@ export default function MyBookings() {
     }
   };
 
-  // OPEN MODAL
   const askCancel = (id) => {
     setConfirmState({ visible: true, bookingId: id });
   };
 
-  // CONFIRM ACTION
   const confirmCancel = async () => {
     const id = confirmState.bookingId;
 
@@ -119,7 +117,6 @@ export default function MyBookings() {
         ))}
       </div>
 
-      {/* REVIEW POPUP */}
       {reviewTarget && (
         <ReviewPopup
           existing={reviewTarget.hasReview ? reviewTarget : null}
@@ -128,7 +125,6 @@ export default function MyBookings() {
         />
       )}
 
-      {/* CONFIRMATION MODAL */}
       {confirmState.visible && (
         <ConfirmModal
           message="Do you really want to cancel this booking?"

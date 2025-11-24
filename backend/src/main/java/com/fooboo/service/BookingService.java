@@ -45,11 +45,15 @@ public class BookingService {
 
         LocalDate bookingDate = (date != null) ? date : LocalDate.now();
 
-        boolean alreadyBooked = bookingRepo
-                .findByUser(user)
-                .stream()
-                .anyMatch(b -> b.getDate().equals(bookingDate) &&
-                        b.getMealTime() == mealTime);
+            boolean alreadyBooked = bookingRepo
+            .findByUser(user)
+            .stream()
+            .anyMatch(b ->
+                    b.getDate().equals(bookingDate) &&
+                    b.getMealTime() == mealTime &&
+                    b.getStatus().equals("CONFIRMED")
+            );
+
 
         if (alreadyBooked) {
             throw new BadRequestException("You already booked " + mealTime + " on " + bookingDate);

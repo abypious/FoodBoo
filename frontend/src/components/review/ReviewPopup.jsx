@@ -19,7 +19,6 @@ export default function ReviewPopup({ onClose, onSubmit, existing }) {
         
         <h3>{existing ? "Edit Review" : "Give Review"}</h3>
 
-        {/* Rating */}
         <div className={styles.rating}>
           {[1,2,3,4,5].map(n => (
             <span
@@ -32,7 +31,6 @@ export default function ReviewPopup({ onClose, onSubmit, existing }) {
           ))}
         </div>
 
-        {/* Comment */}
         <textarea
           placeholder="Your review..."
           value={comment}

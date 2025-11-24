@@ -16,10 +16,10 @@
   margin-top: 10px;
 }
 
-.orangeBar {
+.var(--color-primary)Bar {
   height: 3px;
   width: 60px;
-  background: orange;
+  background: var(--color-primary);
   margin: 10px 0 20px;
 }
 
@@ -31,7 +31,7 @@
 
 .card {
   padding: 15px;
-  background: #fff;
+  background: var(--color-bg);
   border-radius: 12px;
   box-shadow: 0 3px 10px rgba(0,0,0,0.08);
 }

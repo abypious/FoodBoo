@@ -62,12 +62,7 @@ export default function EditCategory() {
   };
 
   const removeImage = async () => {
-    const ok = await showConfirm(
-      "Remove Image",
-      "Are you sure you want to remove this image?"
-    );
-    if (!ok) return;
-
+    
     setCategory((prev) => ({ ...prev, imageUrl: "" }));
     toast.success("Image removed");
   };
@@ -111,10 +106,7 @@ export default function EditCategory() {
           {category.imageUrl ? (
             <div className="preview-wrapper">
               <img src={category.imageUrl} className="preview-img" />
-
-              <button className="remove-img" onClick={removeImage}>
-                ×
-              </button>
+              <button className="remove-img" onClick={removeImage}>×</button>
             </div>
           ) : (
             <label className="placeholder">
@@ -122,6 +114,12 @@ export default function EditCategory() {
               <p>Upload Category Image</p>
               <input type="file" accept="image/*" onChange={handleUpload} />
             </label>
+          )}
+
+          {uploading && (
+            <div className="upload-spinner">
+              <div className="spinner"></div>
+            </div>
           )}
         </div>
 

@@ -115,11 +115,7 @@ export default function EditFood() {
             <label key={i} className="upload-box">
               {food.imageUrls[i] ? (
                 <div className="preview-wrapper">
-                  <img
-                    src={food.imageUrls[i]}
-                    className="preview-img"
-                    alt="food"
-                  />
+                  <img src={food.imageUrls[i]} className="preview-img" alt="food" />
 
                   <button
                     type="button"
@@ -144,6 +140,19 @@ export default function EditFood() {
                 accept="image/*"
                 onChange={(e) => handleUpload(e, i)}
               />
+
+              {uploadingIndex === i && (
+                <div className="upload-spinner">
+                  <div className="spinner"></div>
+                </div>
+              )}
+
+
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handleUpload(e, i)}
+              />
             </label>
           ))}
         </div>
@@ -157,7 +166,7 @@ export default function EditFood() {
                 onChange={(e) => setFood({ ...food, name: e.target.value })}
                 required
               />
-            </div>
+            </div><br />
 
             <div>
               <label>Category of the dish:</label>

@@ -3,6 +3,7 @@
   margin-top: 20px;
 }
 
+/* TITLE */
 .dash-title {
   font-size: 28px;
   font-weight: 700;
@@ -10,6 +11,13 @@
   color: #222;
 }
 
+.dash-subtitle {
+  font-size: 20px;
+  margin: 0;
+  font-weight: 600;
+}
+
+/* LOADING */
 .dash-loading {
   padding: 2rem;
   text-align: center;
@@ -23,51 +31,160 @@
   gap: 22px;
 }
 
-/* PREMIUM CARD */
+/* SUMMARY CARD */
 .dash-card {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(12px);
-  border-radius: 16px;
-  padding: 22px;
+  background: #fff;
+  border-radius: 14px;
+  padding: 20px;
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 16px;
   cursor: pointer;
-  transition: 0.25s ease;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.05);
-  border: 1px solid rgba(240, 240, 240, 0.65);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+  transition: 0.2s;
 }
 
 .dash-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 10px 26px rgba(0,0,0,0.12);
-  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-4px);
 }
 
 /* ICON */
 .dash-icon {
-  background: linear-gradient(135deg, #ff9500, #ff7300);
+  background: #ff8800;
   color: white;
   padding: 14px;
   border-radius: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* TEXT */
-.dash-info {
-  flex-grow: 1;
 }
 
 .dash-label {
-  font-size: 15px;
+  font-size: 14px;
   opacity: 0.7;
-  margin-bottom: 4px;
 }
 
 .dash-value {
-  font-size: 32px;
+  font-size: 30px;
   font-weight: 700;
   color: #333;
 }
+
+/* ---- TABLE ---- */
+
+.table-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 40px;
+}
+
+/* date arrows */
+.date-nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.date-btn {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.date-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.date-label {
+  font-weight: 600;
+}
+
+/* table wrapper */
+.today-table-wrapper {
+  margin-top: 14px;
+  background: #fff;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+}
+
+.today-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.today-table th {
+  background: #fafafa;
+  padding: 12px;
+  border-bottom: 2px solid #eee;
+}
+
+.today-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.today-table tr:hover td {
+  background: #fff7eb;
+}
+
+.no-bookings {
+  text-align: center;
+  padding: 16px;
+  color: #777;
+}
+
+/* status badges */
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.status-confirmed {
+  background: #d4f6d8;
+  color: #0a6d10;
+}
+
+.status-completed {
+  background: #dcecff;
+  color: #0053a6;
+}
+
+.status-cancelled {
+  background: #ffe0e0;
+  color: #b10000;
+}
+
+/* Today / Tomorrow buttons */
+.day-filter {
+  margin-bottom: 14px;
+  display: flex;
+  gap: 10px;
+}
+
+.day-btn {
+  padding: 8px 16px;
+  background: #f3f3f3;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.day-btn.active {
+  background: #ff8800;
+  color: white;
+  border-color: #ff8800;
+}
+.filter-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 0 4px;
+}
+
+

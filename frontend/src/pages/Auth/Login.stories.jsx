@@ -2,7 +2,6 @@ import Login from "./Login";
 import { MemoryRouter } from "react-router-dom";
 import useAuthStore from "../../store/authStore";
 
-// Reset Zustand store before each story render
 function mockAuth() {
   useAuthStore.setState({
     user: null,

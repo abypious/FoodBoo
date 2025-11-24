@@ -20,7 +20,6 @@ export default function FoodList() {
 
   return (
     <div className={styles.pageCard}>
-      {/* Header */}
       <div className={styles.header}>
         <button className={styles.backBtn} onClick={() => nav(-1)}>
           <ArrowLeft size={18} />
@@ -40,7 +39,6 @@ export default function FoodList() {
 
       <div className={styles.orangeBar}></div>
 
-      {/* Food Grid */}
       <div className={styles.grid}>
         {foods
           .filter((f) =>

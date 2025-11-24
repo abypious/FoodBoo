@@ -7,10 +7,8 @@ export default function EmployeeLayout({ children }) {
     <>
       <Navbar />
 
-      {/* Sidebar stays fixed */}
       <EmployeeSidebar />
 
-      {/* Main content */}
       <div className="employee-content">
         {children}
       </div>

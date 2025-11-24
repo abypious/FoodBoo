@@ -64,7 +64,7 @@ export default function CategoriesList() {
             />
 
             <div className="item-content">
-              <h5>{c.name}</h5>
+              <h3>{c.name}</h3>
               <p>{c.description}</p>
 
               <div className="actions" onClick={(e) => e.stopPropagation()}>

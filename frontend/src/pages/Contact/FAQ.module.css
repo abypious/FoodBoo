@@ -1,0 +1,42 @@
+.page {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.title {
+  text-align: center;
+  font-size: 34px;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+.title span {
+  color: var(--color-primary);
+}
+
+.card {
+  background: var(--color-bg);
+  padding: 25px;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+.faqItem {
+  border-bottom: 1px solid #eee;
+  padding: 14px 0;
+}
+
+.question {
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  font-size: 17px;
+}
+
+.answer {
+  margin-top: 10px;
+  font-size: 15px;
+  color: #555;
+}

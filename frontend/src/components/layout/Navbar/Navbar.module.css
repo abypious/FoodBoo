@@ -8,7 +8,7 @@
   width: 100%;
   height: 70px;
   z-index: 1000;
-  background: #fff;
+  background: var(--color-bg);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -39,27 +39,40 @@
 
 /* CENTER — Location */
 .center {
-  display: flex;
-  align-items: center;
+  position: relative;
 }
 
-.location {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  color: #444;
+.dropdown {
+  position: absolute;
+  top: 45px;
+  left: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+  width: 160px;
+  z-index: 50;
+  padding: 6px 0;
+}
+
+.option {
+  padding: 10px 14px;
   cursor: pointer;
-  font-weight: 500;
+  font-size: 14px;
 }
 
-.location i {
-  color: var(--color-primary);
+.option:hover {
+  background: var(--color-bg);
 }
 
-.arrow {
-  font-size: 1rem;
-  opacity: 0.7;
+/* Make location clickable */
+.location {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
+
 
 /* DIVIDER */
 .divider {
@@ -113,4 +126,13 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.homeLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+.homeLink:hover {
+  text-decoration: none;
 }

@@ -60,7 +60,7 @@ export default {
       setupAuthMock();
       return (
         <MemoryRouter>
-          <div style={{ height: "100vh", background: "#f7f7f7" }}>
+          <div style={{ height: "100vh", background: "var(--color-bg)" }}>
             <Story />
           </div>
         </MemoryRouter>

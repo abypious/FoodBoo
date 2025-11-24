@@ -16,6 +16,7 @@ import AddFood from "../pages/Admin/Food/AddFood";
 import EditFood from "../pages/Admin/Food/EditFood";
 import EmployeesList from "../pages/Admin/EmployeesList";
 import FoodReviews from "../pages/Admin/foodreview/FoodReviews";
+import Profile from "../pages/Contact/Profile";
 
 const AdminRoutes = () => (
   <AdminLayout>
@@ -25,17 +26,14 @@ const AdminRoutes = () => (
       <Route path="bookings" element={<Booking />} />
       <Route path="reviews" element={<Reviews />} />
 
-      {/* Categories */}
       <Route path="categories" element={<CategoriesList />} />
       <Route path="categories/add" element={<AddCategory />} />
       <Route path="categories/edit/:id" element={<EditCategory />} />
 
-      {/* Foods */}
       <Route path="foods" element={<FoodList />} />
       <Route path="foods/add" element={<AddFood />} />
       <Route path="foods/edit/:id" element={<EditFood />} />
 
-      {/* FILTERED FOOD LIST — FIXED ROUTE */}
       <Route path="foods/category/:categoryId" element={<FoodList />} />
 
       <Route path="employees" element={<EmployeesList />} />

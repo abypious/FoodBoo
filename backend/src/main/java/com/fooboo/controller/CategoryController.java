@@ -53,7 +53,6 @@ public class CategoryController {
             throw new BadRequestException("Category image is required");
         }
 
-        // If no image provided, set a default placeholder
         if (category.getImageUrl() == null || category.getImageUrl().isBlank()) {
             category.setImageUrl("https://placehold.co/600x400?text=Category");
         }

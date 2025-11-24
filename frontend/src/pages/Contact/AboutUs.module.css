@@ -1,0 +1,30 @@
+.page {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.title {
+  text-align: center;
+  font-size: 34px;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+.title span {
+  color: var(--color-primary);
+}
+
+.card {
+  background: var(--color-bg);
+  padding: 28px;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.bottomText {
+  margin-top: 16px;
+  font-weight: 600;
+}

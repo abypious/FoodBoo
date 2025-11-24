@@ -31,7 +31,6 @@ export default function Login() {
         <h1 className={styles.title}>Welcome Back</h1>
 
         <form onSubmit={submit} className={styles.form}>
-          {/* USERNAME */}
           <label>Username</label>
           <input
             type="email"
@@ -43,7 +42,6 @@ export default function Login() {
             <p className={styles.error}>Enter a registered Email address</p>
           )}<br />
 
-          {/* PASSWORD */}
           <label>Password</label>
           <input
             type="password"
@@ -55,19 +53,15 @@ export default function Login() {
             <p className={styles.error}>Enter a valid password</p>
           )}<br />
 
-          {/* SIGN IN BUTTON */}
           <button className={styles.signinBtn}>Sign In</button>
 
-          {/* SIGN UP LINK */}
           <div className={styles.signupRow}>
             Don’t have an account?{" "}
             <a className={styles.signupLink}>Sign Up</a>
           </div>
 
-          {/* DIVIDER */}
           <div className={styles.divider}></div>
 
-          {/* GUEST LOGIN */}
           <a className={styles.guestLink}>Continue as Guest</a>
         </form>
       </div>

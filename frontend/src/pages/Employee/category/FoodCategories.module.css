@@ -1,6 +1,6 @@
 /* --------------------------- PAGE WRAPPER --------------------------- */
 .pageCard {
-  background: #fff;
+  background: var(--color-bg);
   padding: 2rem;
   border-radius: 16px;
   box-shadow: 0 4px 14px rgba(0,0,0,0.07);
@@ -12,7 +12,7 @@
 .orangeBar {
   height: 2px;
   width: 100%;
-  background: #ff7b00;
+  background: var(--color-primary);
   border-radius: 10px;
   margin-bottom: 1.5rem;
   margin-top: 1.5rem;

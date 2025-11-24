@@ -20,7 +20,6 @@ export default function ReviewsOverview() {
 
   if (loading) return <div className={styles.loading}>Loading reviews...</div>;
 
-  // FILTER + SEARCH LOGIC
   const filteredReviews = reviews.filter((r) => {
     const matchesSearch =
       r.user?.name?.toLowerCase().includes(search.toLowerCase()) ||
@@ -37,9 +36,7 @@ export default function ReviewsOverview() {
     <div className={styles.container}>
       <h2 className={styles.title}>Reviews Overview</h2>
 
-      {/* --- PREMIUM TOOLBAR --- */}
       <div className={styles.toolbar}>
-        {/* Search */}
         <div className={styles.searchWrapper}>
           <span className={styles.searchIcon}>🔍</span>
           <input
@@ -50,7 +47,6 @@ export default function ReviewsOverview() {
           />
         </div>
 
-        {/* Rating Filter */}
         <select
           className={styles.filterDropdown}
           value={ratingFilter}
@@ -65,7 +61,6 @@ export default function ReviewsOverview() {
         </select>
       </div>
 
-      {/* ---- TABLE ---- */}
       {filteredReviews.length === 0 ? (
         <p className={styles.noData}>No reviews found.</p>
       ) : (
