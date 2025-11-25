@@ -9,7 +9,7 @@
 .backBtn {
   background: none;
   border: none;
-  color: #ff9800;
+  color: var(--color-primary);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -74,7 +74,7 @@
 }
 
 .activeDot {
-  background: #ff9800;
+  background: var(--color-primary);
 }
 
 .foodName {
@@ -115,7 +115,7 @@
 }
 
 .proceedBtn {
-  background: #ff9800;
+  background: var(--color-primary);
   color: var(--color-bg);
   border: none;
   padding: 10px 18px;
@@ -198,6 +198,6 @@
   margin-top: 8px;
   background: none;
   border: none;
-  color: #ff9800;
+  color: var(--color-primary);
   cursor: pointer;
 }

@@ -45,15 +45,14 @@ public class BookingService {
 
         LocalDate bookingDate = (date != null) ? date : LocalDate.now();
 
-            boolean alreadyBooked = bookingRepo
-            .findByUser(user)
-            .stream()
-            .anyMatch(b ->
-                    b.getDate().equals(bookingDate) &&
-                    b.getMealTime() == mealTime &&
-                    b.getStatus().equals("CONFIRMED")
-            );
-
+        boolean alreadyBooked = bookingRepo
+                .findByUser(user)
+                .stream()
+                .anyMatch(b ->
+                        b.getDate().equals(bookingDate) &&
+                        b.getMealTime() == mealTime &&
+                        "CONFIRMED".equals(b.getStatus())
+                );
 
         if (alreadyBooked) {
             throw new BadRequestException("You already booked " + mealTime + " on " + bookingDate);
@@ -73,53 +72,66 @@ public class BookingService {
         return saved;
     }
 
-    /** Auto-change CONFIRMED → COMPLETED once its time window passes for today */
-    private void updateStatusIfExpired(Booking booking) {
-        if (!"CONFIRMED".equals(booking.getStatus())) return;
+    //  Update CONFIRMED → COMPLETED if expired, return updated booking.
+    private Booking updateStatusIfExpired(Booking booking) {
+
+        if (!"CONFIRMED".equals(booking.getStatus())) {
+            return booking;
+        }
 
         LocalDate today = LocalDate.now();
         LocalTime now = LocalTime.now();
 
-        if (!booking.getDate().equals(today)) return;
-
-        LocalTime cutoff;
-        switch (booking.getMealTime()) {
-            case BREAKFAST -> cutoff = LocalTime.of(10, 0);
-            case LUNCH     -> cutoff = LocalTime.of(14, 0);
-            case DINNER    -> cutoff = LocalTime.of(21, 0);
-            default        -> cutoff = LocalTime.MAX;
+        if (!booking.getDate().equals(today)) {
+            return booking;
         }
+
+        LocalTime cutoff = switch (booking.getMealTime()) {
+            case BREAKFAST -> LocalTime.of(10, 0);
+            case LUNCH     -> LocalTime.of(14, 0);
+            case DINNER    -> LocalTime.of(21, 0);
+        };
 
         if (now.isAfter(cutoff)) {
             booking.setStatus("COMPLETED");
-            bookingRepo.save(booking);
+            bookingRepo.saveAndFlush(booking); 
         }
+
+        return booking; 
     }
 
-    /** Set hasReview flag for frontend */
+    // Set hasReview flag for frontend 
     private void attachHasReview(Booking booking) {
         reviewRepo.findByBookingId(booking.getId())
-            .ifPresent(r -> {
-                booking.setHasReview(true);
-                booking.setReviewId(r.getId());
-            });
+                .ifPresent(r -> {
+                    booking.setHasReview(true);
+                    booking.setReviewId(r.getId());
+                });
     }
 
+    
+    // GET user bookings — NOW RETURNS UPDATED VALUES
+     
     public List<Booking> getUserBookings(User user) {
         List<Booking> bookings = bookingRepo.findByUser(user);
 
-        bookings.forEach(b -> {
-            updateStatusIfExpired(b);
-            attachHasReview(b);
-        });
-
-        return bookings;
+        return bookings.stream().map(b -> {
+            Booking updated = updateStatusIfExpired(b);
+            attachHasReview(updated);
+            return updated;
+        }).toList();
     }
+
+    //  GET all bookings
 
     public List<Booking> getAllBookings() {
         List<Booking> bookings = bookingRepo.findAll();
-        bookings.forEach(this::attachHasReview);
-        return bookings;
+
+        return bookings.stream().map(b -> {
+            Booking updated = updateStatusIfExpired(b);
+            attachHasReview(updated);
+            return updated;
+        }).toList();
     }
 
     @Transactional
@@ -141,7 +153,7 @@ public class BookingService {
         }
 
         booking.setStatus("CANCELLED");
-        bookingRepo.save(booking);
+        bookingRepo.saveAndFlush(booking);
 
         pointsService.addPoints(user, -5, "Cancelled booking for " + booking.getMealTime());
 

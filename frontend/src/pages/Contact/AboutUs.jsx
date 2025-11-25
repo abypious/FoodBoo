@@ -1,9 +1,18 @@
 import React from "react";
 import styles from "./AboutUs.module.css";
+import { useNavigate } from "react-router-dom";
 
 export default function AboutUs() {
+
+  const navigate = useNavigate(); 
+
   return (
     <div className={styles.page}>
+
+      <button className={styles.homeBtn} onClick={() => navigate(-1)}>
+        ← Back
+      </button>
+
       <h1 className={styles.title}>
         About <span>Us</span>
       </h1>

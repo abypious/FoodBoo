@@ -28,3 +28,18 @@
   margin-top: 16px;
   font-weight: 600;
 }
+
+.homeBtn {
+  background: var(--color-bg);
+  border: 1px solid #ccc;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-bottom: 20px;
+  transition: 0.2s ease;
+}
+
+.homeBtn:hover {
+  background: var(--color-primary);
+}

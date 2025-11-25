@@ -1,13 +1,20 @@
 import { useEffect, useState } from "react";
-import useReviewStore from "../../store/reviewStore";
-import ReviewPopup from "../../components/review/ReviewPopup";
-import styles from "./MyReviews.module.css";
 import { ArrowLeft, Trash } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import useReviewStore from "../../store/reviewStore";
+import ReviewPopup from "../../components/review/ReviewPopup";
+import ConfirmModal from "../../components/toast/ConfirmModal";
+import styles from "./MyReviews.module.css";
 
 export default function MyReviews() {
   const [reviews, setReviews] = useState([]);
   const [editing, setEditing] = useState(null);
+
+  // Confirm modal state
+  const [confirmState, setConfirmState] = useState({
+    visible: false,
+    reviewId: null
+  });
 
   const { getMyReviews, deleteReview, updateReview } = useReviewStore();
   const nav = useNavigate();
@@ -17,12 +24,24 @@ export default function MyReviews() {
   }, []);
 
   const load = async () => {
-    const res = await getMyReviews();
-    setReviews(res);
+    try {
+      const res = await getMyReviews();
+      setReviews(res);
+    } catch {
+      console.error("Failed to load reviews");
+    }
   };
 
-  const handleDelete = async (id) => {
-    if (!confirm("Delete this review permanently?")) return;
+  // Open confirm modal
+  const askDelete = (id) => {
+    setConfirmState({ visible: true, reviewId: id });
+  };
+
+  // Confirm delete
+  const confirmDelete = async () => {
+    const id = confirmState.reviewId;
+
+    setConfirmState({ visible: false, reviewId: null });
 
     await deleteReview(id);
     load();
@@ -36,7 +55,7 @@ export default function MyReviews() {
 
   return (
     <div className={styles.page}>
-      <button className={styles.backBtn} onClick={() => nav("/employee")}>
+      <button className={styles.backBtn} onClick={() => nav(-1)}>
         <ArrowLeft size={18} /> Back
       </button>
 
@@ -46,53 +65,75 @@ export default function MyReviews() {
       <div className={styles.list}>
         {reviews.length === 0 && <p>No reviews yet.</p>}
 
-        {reviews.map((r) => (
-          <div key={r.id} className={styles.card}>
-            <div className={styles.row}>
-              <img
-                src={r.foodItem?.imageUrl || "/placeholder-food.png"}
-                className={styles.foodImg}
-              />
+        {reviews.map((r) => {
+          const food = r.booking?.foodItem;
 
-              <div className={styles.info}>
-                <p className={styles.name}>{r.foodItem?.name}</p>
-                
-                <p className={styles.stars}>
-                  {"★".repeat(r.rating)}
-                  {"☆".repeat(5 - r.rating)}
-                </p>
+          return (
+            <div key={r.id} className={styles.card}>
+              <div className={styles.row}>
+                <img
+                  src={
+                    food?.imageUrls?.[0] ||
+                    food?.imageUrl ||
+                    "/placeholder-food.png"
+                  }
+                  alt={food?.name}
+                  className={styles.foodImg}
+                />
 
-                <p className={styles.comment}>{r.comment}</p>
-                <span className={styles.date}>
-                  {new Date(r.createdAt).toLocaleDateString()}
-                </span>
-              </div>
+                <div className={styles.info}>
+                  <p className={styles.name}>{food?.name}</p>
 
-              <div className={styles.actions}>
-                <button
-                  className={styles.editBtn}
-                  onClick={() => setEditing(r)}
-                >
-                  Edit
-                </button>
+                  <p className={styles.stars}>
+                    {"★".repeat(r.rating)}
+                    {"☆".repeat(5 - r.rating)}
+                  </p>
 
-                <button
-                  className={styles.deleteBtn}
-                  onClick={() => handleDelete(r.id)}
-                >
-                  <Trash size={16} />
-                </button>
+                  <p className={styles.comment}>{r.comment}</p>
+
+                  <span className={styles.date}>
+                    {new Date(r.createdAt).toLocaleDateString()}
+                  </span>
+                </div>
+
+                <div className={styles.actions}>
+                  <button
+                    className={styles.editBtn}
+                    onClick={() => setEditing(r)}
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    className={styles.deleteBtn}
+                    onClick={() => askDelete(r.id)}
+                  >
+                    <Trash size={16} />
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
+      {/* Edit Review Popup */}
       {editing && (
         <ReviewPopup
           existing={editing}
           onClose={() => setEditing(null)}
           onSubmit={submitEdit}
+        />
+      )}
+
+      {/* Confirm Delete Modal */}
+      {confirmState.visible && (
+        <ConfirmModal
+          message="Do you really want to delete this review?"
+          onCancel={() =>
+            setConfirmState({ visible: false, reviewId: null })
+          }
+          onConfirm={confirmDelete}
         />
       )}
     </div>

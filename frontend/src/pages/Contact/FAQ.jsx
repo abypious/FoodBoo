@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import styles from "./FAQ.module.css";
+import { useNavigate } from "react-router-dom";
 
 export default function FAQ() {
   const [open, setOpen] = useState(null);
+  const navigate = useNavigate(); 
 
   const toggle = (i) => {
     setOpen(open === i ? null : i);
@@ -29,6 +31,11 @@ export default function FAQ() {
 
   return (
     <div className={styles.page}>
+
+      <button className={styles.homeBtn} onClick={() => navigate("categories")}>
+        ← Back
+      </button>
+
       <h1 className={styles.title}>
         Frequently Asked <span>Questions</span>
       </h1>

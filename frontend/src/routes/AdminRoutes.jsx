@@ -16,7 +16,8 @@ import AddFood from "../pages/Admin/Food/AddFood";
 import EditFood from "../pages/Admin/Food/EditFood";
 import EmployeesList from "../pages/Admin/EmployeesList";
 import FoodReviews from "../pages/Admin/foodreview/FoodReviews";
-import Profile from "../pages/Contact/Profile";
+
+
 
 const AdminRoutes = () => (
   <AdminLayout>

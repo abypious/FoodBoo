@@ -9,6 +9,10 @@ export default function BookingOverview() {
   const [filterDate, setFilterDate] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
 
+  // Pagination
+  const [page, setPage] = useState(1);
+  const pageSize = 10;
+
   useEffect(() => {
     API.get("/api/bookings/all")
       .then((r) => {
@@ -22,19 +26,34 @@ export default function BookingOverview() {
       .finally(() => setLoading(false));
   }, []);
 
+  // Reset pagination when filters change
+  useEffect(() => {
+    setPage(1);
+  }, [filterDate, statusFilter]);
+
   if (loading) return <div className={styles.loading}>Loading bookings...</div>;
 
+  // Filtering
   const filteredBookings = bookings.filter((b) => {
     const matchDate = filterDate ? b.date === filterDate : true;
     const matchStatus = statusFilter ? b.status === statusFilter : true;
     return matchDate && matchStatus;
   });
 
+  // Pagination logic
+  const totalPages = Math.ceil(filteredBookings.length / pageSize);
+
+  const paginatedBookings = filteredBookings.slice(
+    (page - 1) * pageSize,
+    page * pageSize
+  );
+
   return (
     <div className={styles.container}>
       <div className={styles.headerRow}>
         <h2 className={styles.title}>Bookings Overview</h2>
 
+        {/* Filters */}
         <div className={styles.filterRow}>
           <input
             type="date"
@@ -68,46 +87,73 @@ export default function BookingOverview() {
         </div>
       </div>
 
+      {/* No data */}
       {filteredBookings.length === 0 ? (
         <p className={styles.noData}>No bookings found.</p>
       ) : (
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>Employee</th>
-              <th>Food</th>
-              <th>Date</th>
-              <th>Meal</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {filteredBookings.map((b) => (
-              <tr key={b.id}>
-                <td>{b.user?.name || "Unknown"}</td>
-                <td>{b.foodItem?.name || "Unknown Food"}</td>
-                <td>{b.date ? new Date(b.date).toLocaleDateString() : "-"}</td>
-                <td>{b.mealTime}</td>
-                <td>
-                  <span
-                    className={
-                      b.status === "CONFIRMED"
-                        ? styles.statusConfirmed
-                        : b.status === "COMPLETED"
-                        ? styles.statusCompleted
-                        : b.status === "CANCELLED"
-                        ? styles.statusCancelled
-                        : styles.statusPending
-                    }
-                  >
-                    {b.status}
-                  </span>
-                </td>
+        <>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>Employee</th>
+                <th>Food</th>
+                <th>Date</th>
+                <th>Meal</th>
+                <th>Status</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {paginatedBookings.map((b) => (
+                <tr key={b.id}>
+                  <td>{b.user?.name || "Unknown"}</td>
+                  <td>{b.foodItem?.name || "Unknown Food"}</td>
+                  <td>
+                    {b.date ? new Date(b.date).toLocaleDateString() : "-"}
+                  </td>
+                  <td>{b.mealTime}</td>
+
+                  <td>
+                    <span
+                      className={
+                        b.status === "CONFIRMED"
+                          ? styles.statusConfirmed
+                          : b.status === "COMPLETED"
+                          ? styles.statusCompleted
+                          : b.status === "CANCELLED"
+                          ? styles.statusCancelled
+                          : styles.statusPending
+                      }
+                    >
+                      {b.status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/* Pagination */}
+          <div className={styles.pagination}>
+            <button
+              disabled={page === 1}
+              onClick={() => setPage(page - 1)}
+            >
+              Prev
+            </button>
+
+            <span>
+              Page {page} / {totalPages}
+            </span>
+
+            <button
+              disabled={page === totalPages}
+              onClick={() => setPage(page + 1)}
+            >
+              Next
+            </button>
+          </div>
+        </>
       )}
     </div>
   );

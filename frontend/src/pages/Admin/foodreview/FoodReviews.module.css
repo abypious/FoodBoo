@@ -16,7 +16,7 @@
 .backBtn {
   background: none;
   border: none;
-  color: #ff9800;
+  color: var(--color-primary);
   cursor: pointer;
   display: flex;
   align-items: center;

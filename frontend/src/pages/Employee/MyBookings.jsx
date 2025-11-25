@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import useBookingStore from "../../store/bookingStore";
 import ReviewPopup from "../../components/review/ReviewPopup";
@@ -15,8 +15,15 @@ export default function MyBookings() {
     bookingId: null
   });
 
-  const nav = useNavigate();
+  // Filters
+  const [filterDate, setFilterDate] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
 
+  // Pagination
+  const [page, setPage] = useState(1);
+  const pageSize = 5;
+
+  const nav = useNavigate();
   const { getMyBookings, cancelBooking, addReview, updateReview } =
     useBookingStore();
 
@@ -33,13 +40,14 @@ export default function MyBookings() {
     }
   };
 
+  // Ask Cancel
   const askCancel = (id) => {
     setConfirmState({ visible: true, bookingId: id });
   };
 
+  // Confirm Cancel
   const confirmCancel = async () => {
     const id = confirmState.bookingId;
-
     setConfirmState({ visible: false, bookingId: null });
 
     try {
@@ -51,6 +59,7 @@ export default function MyBookings() {
     }
   };
 
+  // Review Popup
   const openReview = (booking) => {
     setReviewTarget(booking);
   };
@@ -74,21 +83,83 @@ export default function MyBookings() {
     load();
   };
 
+  // Filtering
+  const filteredBookings = useMemo(() => {
+    return bookings.filter((b) => {
+      const matchesDate = filterDate ? b.date === filterDate : true;
+      const matchesStatus = filterStatus ? b.status === filterStatus : true;
+      return matchesDate && matchesStatus;
+    });
+  }, [bookings, filterDate, filterStatus]);
+
+  // Pagination
+  const totalPages = Math.ceil(filteredBookings.length / pageSize);
+  const paginated = filteredBookings.slice(
+    (page - 1) * pageSize,
+    page * pageSize
+  );
+
   return (
     <div className={styles.page}>
-      <button className={styles.backBtn} onClick={() => nav("/employee")}>
-        <ArrowLeft size={18} /> Back
-      </button>
+      <div className={styles.header}>
+        <button className={styles.backBtn} onClick={() => nav("/employee")}>
+          <ArrowLeft size={18} /> Back
+        </button>
 
-      <h2 className={styles.title}>My Bookings</h2>
+        <h2 className={styles.title}>My Bookings</h2>
+
+        <div className={styles.filters}>
+        <input
+          type="date"
+          value={filterDate}
+          onChange={(e) => {
+            setPage(1);
+            setFilterDate(e.target.value);
+          }}
+        />
+
+        <select
+          value={filterStatus}
+          onChange={(e) => {
+            setPage(1);
+            setFilterStatus(e.target.value);
+          }}
+        >
+          <option value="">All Status</option>
+          <option value="CONFIRMED">Confirmed</option>
+          <option value="COMPLETED">Completed</option>
+          <option value="CANCELLED">Cancelled</option>
+        </select>
+      </div>
+
+
+        <button
+          className={styles.reviewsBtn}
+          onClick={() => nav("/employee/reviews")}
+        >
+          My Reviews
+        </button>
+      </div>
+
       <div className={styles.orangeBar}></div>
 
       <div className={styles.list}>
-        {bookings.map((b) => (
+        {paginated.map((b) => (
           <div key={b.id} className={styles.card}>
             <div className={styles.row}>
               <div className={styles.food}>{b.foodItem?.name}</div>
-              <div className={styles.status}>{b.status}</div>
+
+              <div
+                className={`${styles.status} ${
+                  b.status === "CONFIRMED"
+                    ? styles.green
+                    : b.status === "CANCELLED"
+                    ? styles.red
+                    : ""
+                }`}
+              >
+                {b.status}
+              </div>
             </div>
 
             <div className={styles.details}>
@@ -117,6 +188,26 @@ export default function MyBookings() {
         ))}
       </div>
 
+      {filteredBookings.length > pageSize && (
+        <div className={styles.pagination}>
+          <button disabled={page === 1} onClick={() => setPage(page - 1)}>
+            Prev
+          </button>
+
+          <span>
+            Page {page} of {totalPages}
+          </span>
+
+          <button
+            disabled={page === totalPages}
+            onClick={() => setPage(page + 1)}
+          >
+            Next
+          </button>
+        </div>
+      )}
+
+      {/* Modals */}
       {reviewTarget && (
         <ReviewPopup
           existing={reviewTarget.hasReview ? reviewTarget : null}

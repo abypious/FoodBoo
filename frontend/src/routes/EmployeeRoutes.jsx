@@ -10,7 +10,6 @@ import MyBookings from "../pages/Employee/MyBookings";
 import MyReviews from "../pages/Employee/MyReviews";
 import AboutUs from "../pages/Contact/AboutUs";
 import FAQ from "../pages/Contact/FAQ";
-import Profile from "../pages/Contact/Profile";
 
 export default function EmployeeRoutes() {
   return (
